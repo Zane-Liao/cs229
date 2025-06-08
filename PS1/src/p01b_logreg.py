@@ -20,7 +20,7 @@ def main(train_path, eval_path, pred_path):
 
     model.fit(x_train, y_train)
 
-    util.plot(x_train, y_train, model.theta, 'output/p01b_{}.png'.format(pred_path[-3]))
+    util.plot(x_train, y_train, model.theta, f'output/p01b_{pred_path[-3]}.png')
 
     x_eval, y_eval = util.load_dataset(eval_path, add_intercept=True)
 
@@ -53,7 +53,7 @@ class LogisticRegression(LinearModel):
         while True:
             theta_old = np.copy(self.theta)
 
-            h_theta = 1 / (1 + np.exp(-x.dot(self.theta)))
+            h_theta = 1 / (1 + np.exp(-x @ self.theta))
 
             # H = (x.T * h_theta * (1 - h_theta)).dot(x) / m
             S = np.diag(h_theta*(1 - h_theta))
