@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import util
+import os
 
 from linear_model import LinearModel
 
@@ -18,10 +19,27 @@ def main(tau, train_path, eval_path):
 
     # *** START CODE HERE ***
     # Fit a LWR model
+    model = LocallyWeightedLinearRegression(tau=tau)
+    model.fit(x_train, y_train)
+
     # Get MSE value on the validation set
+    x_eval, y_eval = util.load_dataset(eval_path, add_intercept=True)
+
+    pred_y = model.predict(x_eval)
+    
+    MSE = np.mean(np.square(pred_y - y_eval))
+    print(f"MSE: {MSE}")
+
     # Plot validation predictions on top of training set
     # No need to save predictions
     # Plot data
+    os.makedirs('output', exist_ok=True)
+    plt.figure()
+    plt.plot(x_train, y_train, 'bx')
+    plt.plot(x_eval, pred_y, 'ro')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.savefig('output/p05b_.png')
     # *** END CODE HERE ***
 
 
@@ -45,6 +63,8 @@ class LocallyWeightedLinearRegression(LinearModel):
 
         """
         # *** START CODE HERE ***
+        self.x = x
+        self.y = y
         # *** END CODE HERE ***
 
     def predict(self, x):
@@ -57,4 +77,21 @@ class LocallyWeightedLinearRegression(LinearModel):
             Outputs of shape (m,).
         """
         # *** START CODE HERE ***
+        m, n = x.shape
+        pred_y = np.zeros(m, dtype=np.float64)
+        
+        for i in range(m):
+            weights = np.exp(-np.sum(np.square(x - x[i]), axis=1)
+                             / (2 * self.tau ** 2))
+            W = np.diag(weights)
+            
+            pred_y[i] = (
+                x[i] @
+                np.linalg.pinv(self.x.T @ W @ self.x)
+                @ self.x.T 
+                @ W 
+                @ self.y 
+                )
+
+        return pred_y
         # *** END CODE HERE ***

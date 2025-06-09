@@ -19,9 +19,34 @@ def main(tau_values, train_path, valid_path, test_path, pred_path):
     x_train, y_train = util.load_dataset(train_path, add_intercept=True)
 
     # *** START CODE HERE ***
+    x_valid, y_valid = util.load_dataset(valid_path, add_intercept=True)
+    x_test, y_test = util.load_dataset(test_path, add_intercept=True)
+
+    model = LocallyWeightedLinearRegression(tau=0.5)
+    pred_y = model.fit(x_train, y_train)
+    mse_lists = []
+
     # Search tau_values for the best tau (lowest MSE on the validation set)
+    for tau in tau_values:
+        model.tau = tau
+
+        MSE = np.mean(np.square(pred_y - y_valid))
+        mse_lists.append(MSE)
+        print(f"tau: {tau}, MSE: {MSE}")
+        # Plot data...
+
+    # Solution
+    tau_output = tau_values[np.argmin(mse_lists)]
+    print(f'valid set: lowest MSE={min(mse_lists)}, tau={tau_output}')
     # Fit a LWR model with the best tau value
+    model.tau = tau_output
+
     # Run on the test set to get the MSE value
     # Save predictions to pred_path
-    # Plot data
+    y_pred = model.predict(x_test)
+    np.savetxt(pred_path, y_pred)
+
+    MSE = np.mean((y_pred - y_test)**2)
+    print(f'test set: tau={tau_output}, MSE={MSE}')
+
     # *** END CODE HERE ***
