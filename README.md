@@ -1,3 +1,3 @@
 # cs229
-- This is the Problem Sets for cs229 2018. It contains general exercises and code problems, but does not include plot related problems (see Solution)
-- I have written the general questions using pen and paper, and will format them using Latex later.
+- This is the problem set for cs229 in 2018. It will only contain code problems, but not general diagram-related problems (see solutions).
+- I have written down the general problems with pen and paper, and will supplement them with Markdown later and post them on my blog.
