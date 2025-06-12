@@ -1,7 +1,7 @@
 
 ### 1. Linear Classifiers (logistic regression and GDA)
 (a)
-$$\begin{align}
+$$\begin{align*}
 
 \frac{\partial J(\theta)}{\partial \theta_j} &= -\frac{1}{m} \sum_{i=1}^{m} y^{(i)} \frac{g(\theta^T x^{(i)})[1 - g(\theta^T x^{(i)})]}{g(\theta^T x^{(i)})} x_j^{(i)} - (1 - y^{(i)}) \frac{g(\theta^T x^{(i)})[1 - g(\theta^T x^{(i)})]}{1 - g(\theta^T x^{(i)})} x_j^{(i)} \tag{1.1.1} \\
 
@@ -9,7 +9,7 @@ $$\begin{align}
 
 &= \frac{1}{m} \sum_{i=1}^{m} [g(\theta^T x^{(i)}) - y^{(i)}] x_j^{(i)} \tag{1.1.3}
 
-\end{align}$$
+\end{align*}$$
 $$\nabla_\theta J(\theta) = \frac{1}{m} X^T (g(X\theta) - Y)$$
 
 $$H_{jk} = \frac{\partial^2 J(\theta)}{\partial \theta_j \partial \theta_k} = \frac{1}{m} \sum_{i=1}^{m} g(\theta^T x^{(i)}) [1 - g(\theta^T x^{(i)})] x_j^{(i)} x_k^{(i)}$$
@@ -22,7 +22,7 @@ $$= \frac{1}{m} \sum_{i=1}^{m} g(\theta^T x^{(i)}) [1 - g(\theta^T x^{(i)})] [(x
 (b) Code Problem...
 (c)
 $$
-\begin{align}
+\begin{align*}
 
 {p(y=1|x)}
 &= \frac{p(x|y=1)p(y=1)}{p(x|y=1)p(y=1) +p(x|y=0)p(y=0)} \tag{1.2.1} \\
@@ -37,12 +37,12 @@ $$
 
 &= \frac{1}{1 + \exp\{-[(\Sigma^{-1}(\mu_1 - \mu_0))^{T}x + \frac{1}{2}(\mu_0 + \mu_1)^{T}\Sigma^{-1}(\mu_0 - \mu_1) - \ln(\frac{1 - \phi}{\phi})]\}} \tag{1.2.6}
 
-\end{align}
+\end{align*}
 
 $$
 (1.2.5) => (1.2.6)
 $$
-\begin{align}
+\begin{align*}
 
 A = \frac{1}{2}(x - \mu_1)^{T}\Sigma^{-1}(x - \mu_1) - \frac{1}{2}(x - \mu_0)^{T}\Sigma^{-1}(x - \mu_0) \\
 
@@ -50,14 +50,14 @@ A = \frac{1}{2}(x - \mu_1)^{T}\Sigma^{-1}(x - \mu_1) - \frac{1}{2}(x - \mu_0)^{T
 
 (x - \mu_0)^{T}\Sigma^{-1}(x - \mu_0) = x^{T}\Sigma^{-1}x - x^{T}\Sigma^{-1}\mu_0 - \mu_0^{T}\Sigma^{-1}x + \mu_0^{T}\Sigma^{-1}\mu_1
 
-\end{align}
+\end{align*}
 $$
 Because $\Sigma^{-1}$ With Symmetric Matrix, So 
 $$
 \Sigma^{-1}=>X^{T}\Sigma^{-1}\mu_k = \mu_k^{T}\Sigma^{-1}
 $$
 $$
-\begin{align}
+\begin{align*}
 
 (x - \mu_1)^{T}\Sigma^{-1}(x - \mu_1) - (x - \mu_0)^{T}\Sigma^{-1}(x - \mu_0)
 
@@ -80,12 +80,12 @@ $$
 
 &= [(\Sigma^{-1}(\mu_1 - \mu_0)^{T}x + \frac{1}{2}(\mu_0 + \mu_1)^{T}\Sigma^{-1}(\mu_0 - \mu_1)] \\
 
-\end{align}
+\end{align*}
 $$
 (d)
 
 $$
-\begin{align}
+\begin{align*}
 \mu_{y^{(i)}} &= \mathbf{1}\{y^{(i)} = 0\}\mu_0 + \mathbf{1}\{y^{(i)} = 1\}\mu_1 \\
 
 p(x^{(i)}|y^{(i)}; \mu_0, \mu_1, \Sigma) &= \frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}} \exp\left\{-\frac{1}{2}(x^{(i)} - \mu_{y^{(i)}})^T \Sigma^{-1} (x^{(i)} - \mu_{y^{(i)}})\right\} \\
@@ -121,20 +121,20 @@ p(y^{(i)}; \phi) &= \phi^{\mathbf{1}\{y^{(i)}=1\}} (1-\phi)^{1-\mathbf{1}\{y^{(i
 
 \begin{cases} \frac{\partial \ell}{\partial \phi} &= 0 \\ \frac{\partial \ell}{\partial \mu_0} &= 0 \\ \frac{\partial \ell}{\partial \mu_1} &= 0 \\ \frac{\partial \ell}{\partial \Sigma} &= 0 \end{cases} \Rightarrow \begin{cases} \phi &= \frac{1}{m} \sum_{i=1}^m \mathbf{1}\{y^{(i)} = 1\} \\ \mu_0 &= \frac{\sum_{i=1}^m \mathbf{1}\{y^{(i)}=0\}x^{(i)}}{\sum_{i=1}^m \mathbf{1}\{y^{(i)}=0\}} \\ \mu_1 &= \frac{\sum_{i=1}^m \mathbf{1}\{y^{(i)}=1\}x^{(i)}}{\sum_{i=1}^m \mathbf{1}\{y^{(i)}=1\}} \\ \Sigma &= \frac{1}{m} \sum_{i=1}^m (x^{(i)} - \mu_{y^{(i)}})(x^{(i)} - \mu_{y^{(i)}})^T \end{cases}
 
-\end{align}
+\end{align*}
 $$
 
 ### 2. Incomplete, Positive-Only Labels
 (a)
 $$ 
 
-\begin{align}
+\begin{align*}
 P(y = 1|t = 1, x)P(t = 1|x)P(x) &= P(y = 1, t = 1, x) = P(t = 1|y = 1, x)P(y = 1|x)P(x) \\
 P(t = 1|x) &= P(y = 1|x) \frac{P(t = 1|y = 1, x)}{P(y = 1|t = 1, x)} \\
 P(t = 1|y = 1, x) &= 1, \quad P(y = 1|t = 1, x) = P(y = 1|t = 1) \\
 P(t = 1|x) &= \frac{P(y = 1|x)}{P(y = 1|t = 1)} \\
 P(y = 1|t = 1) &= \alpha \\
-\end{align}$$
+\end{align*}$$
 Another Solution:
 $$
 \begin{align*}
@@ -383,7 +383,7 @@ $$
 Notice that there are only $m$ $w^{(i)}$'s, and $w^{(i)}$ only takes effect on the $i$-th entry of $(X \theta - y)^T$ and $(X \theta - y)$.
 Hence, $W$ is a diagonal matrix, and the above equation holds by picking:
 $$
-\begin{equation}
+\begin{equation*}
 
 X = \begin{bmatrix}
 
@@ -413,7 +413,7 @@ y^{(m)} \\
 
 W = \frac{1}{2} \mathrm{diag} (w^{(i)}, \dots , w^{(m)})
 
-\end{equation}
+\end{equation*}
 $$
 
 ii
@@ -444,7 +444,7 @@ $$
 $W^{T} = W$ Symmetric Matrix
 (1.5.4)
 $$
-\begin{align}
+\begin{align*}
 
 y^{T}WX\theta &= X\theta Wy^{T} \\
 
@@ -454,13 +454,13 @@ y^{T}WX\theta &= X\theta Wy^{T} \\
 
 &= X^{T}\theta^{T}Wy
 
-\end{align}
+\end{align*}
 $$
 
 (1.5.8)
 $\nabla_\theta J(\theta)= 0$
 $$
-\begin{align}
+\begin{align*}
 
 \nabla_\theta (2y^{T}WX\theta) &= 2(y^{T}WX)^{T} \\
 
@@ -468,7 +468,7 @@ $$
 
 &= 2X^{T}Wy
 
-\end{align}
+\end{align*}
 $$
 By solving the equation, we obtain:
 
