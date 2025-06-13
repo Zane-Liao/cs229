@@ -290,5 +290,110 @@ J(\theta) = ||X\theta - \vec{y}||_2^2 + \gamma||\theta||_1 \\
 $$
 
 ### 4.
+Solution:
+##### (a)
+Prove: $K(x,z) = K_1(x,z) + K_2(x,z)$
+$$
+\begin{align*}
+\text{Yes, $K_1$ and $K_2$ are both PSD, so $K_1 + K_2$ is PSD.} \\
+z^T K z = z^T (K_1 + K_2) z = z^T K_1 z + z^T K_2 z \geq 0
+
+\end{align*}
+$$
+
+##### (b)
+Prove: $K(x,z) = K_1(x,z) - K_2(x,z)$
+$$
+\begin{align*}
+\text{No, although $K_1$ and $K_2$ are both PSD, $K_1 - K_2$ may not be PSD.
+For example, $K_2 = 2K_1$} \\
+z^T K z = z^T (K_1 - K_2) z = z^T (K_1 - 2K_1) z = -z^T K_1 z \leq 0
+
+\end{align*}
+$$
+
+##### (c)
+Prove: $K(x,z) = aK_1(x,z)$
+$$
+\begin{align*}
+\text{Yes, $K_1$ is PSD, so $aK_1$ $(a \in \mathbb{R}^+)$ is PSD.} \\
+z^T K z = z^T a K_1 z = a \cdot z^T K_1 z \geq 0
+
+\end{align*}
+$$
+
+##### (d)
+Prove: $K(x,z) = -aK_1(x,z)$
+$$
+\begin{align*}
+\text{No, $K_1$ is PSD, so $-aK_1$ $(a \in \mathbb{R}^+)$ is not PSD.} \\
+z^T K z = z^T (-a K_1) z = -a \cdot z^T K_1 z \leq 0
+
+\end{align*}
+$$
+
+##### (e)
+Prove: $K(x,z) = K_1(x,z)K_2(x,z)$
+$$
+\begin{align*}
+\text{Yes, $K_1 K_2$ is PSD.} \\
+z^T K z &= \sum \sum z_i K_{ij} z_j \\
+&= \sum \sum z_i K_1 \left(x^{(i)}, x^{(j)}\right) K_2 \left(x^{(i)}, x^{(j)}\right) z_j \\
+&= \sum \sum z_i \phi_1(x^{(i)})^T \phi_1(x^{(j)}) \phi_2(x^{(i)})^T \phi_2(x^{(j)}) z_j \\
+&= \sum \sum z_i \sum_a \phi_{1a}(x^{(i)}) \phi_{1a}(x^{(j)}) \sum_b \phi_{2b}(x^{(i)}) \phi_{2b}(x^{(j)}) z_j \\
+&= \sum \sum \sum \sum z_i \phi_{1a}(x^{(i)}) \phi_{1a}(x^{(j)}) \phi_{2b}(x^{(i)}) \phi_{2b}(x^{(j)}) z_j \\
+&= \sum \sum \sum \left(z_i \phi_{1a}(x^{(i)}) \phi_{2b}(x^{(i)})\right)^2 \geq 0
+\end{align*}
+$$
+
+##### (f)
+Prove: $K(x,z) = f(x)f(z)$
+$$
+\begin{align*}
+\text{Yes, $K$ is PSD.} \\
+\text{$f : \mathbb{R}^n \mapsto \mathbb{R}$ is a real-valued function, then} \\
+z^T K z &= \sum \sum z_i K_{ij} z_j \\
+&= \sum \sum z_i f(x^{(i)}) f(x^{(j)}) z_j \\
+&= \sum \left(z_i f(x^{(i)})\right)^2 \geq 0
+
+\end{align*}
+$$
+
+##### (g)
+Prove: $K(x,z) = K_3(\phi(x), \phi(z))$
+$$
+\begin{align*}
+\text{Yes, $K_3(\phi(x), \phi(z))$ is a valid kernel, no matter what the inputs are.} \\
+\\
+\text{Yes, $p(K_1)$ is a valid kernel.} \\
+\\
+\text{$p(x)$ is a polynomial function with coefficients $c_k > 0$, $k = 0, 1, \ldots, n$} \\
+\\
+p(x) = \sum_{k=0}^n c_k x^k \\
+\\
+K(x, z) = p(K_1(x, z)) = \sum_{k=0}^n c_k \left(K_1(x, z)\right)^k
+\end{align*}
+$$
+
+##### (h)
+Prove: $K(x,z) = p(K_1(x,z))$
+$$
+\begin{align*}
+
+\text{From (e) we know $K(x, z) = K_1(x, z) K_2(x, z)$ is a valid kernel, so $K(x, z) = \left(K_1(x, z)\right)^k$ is valid.} \\
+\\
+\text{From (a) and (c), we know $K(x, z) = K_1(x, z) + K_2(x, z)$ and $K(x, z) = a K_1(x, z)$, $a \in \mathbb{R}^+$ are both valid.} \\
+\\
+\text{So $K(x, z) = \sum_{k=0}^n c_k \left(K_1(x, z)\right)^k$ is a valid kernel.} \\
+
+\end{align*}
+$$
+
+### 5.
 
 ##### (a)
+$$
+\begin{align*}
+
+\end{align*}
+$$
