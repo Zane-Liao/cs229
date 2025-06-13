@@ -35,7 +35,7 @@ def main(train_path, valid_path, test_path, pred_path):
 
     model_c.fit(x_train, t_train)
 
-    util.plot(x_test, t_test, model_c.theta, f'output/p02c_{pred_path_c}.png')
+    util.plot(x_test, t_test, model_c.theta, f'output/p02c.png')
 
     t_pred = model_c.predict(x_test)
 
@@ -49,21 +49,20 @@ def main(train_path, valid_path, test_path, pred_path):
 
     model_d.fit(x_train, y_train)
 
-    util.plot(x_test, y_test, model_d.theta, f'output/p02d_{pred_path_d}.png')
+    util.plot(x_test, y_test, model_d.theta, f'output/p02d.png')
 
     y_pred = model_d.predict(x_test)
 
     np.savetxt(pred_path_d, y_pred > 0.5, fmt="%d")
     # Part (e): Apply correction factor using validation set and test on true labels
     # Plot and use np.savetxt to save outputs to pred_path_e
-    x_vaild, y_vaild = util.add_intercept(pred_path, label_col = 'y', add_intercept=True)
+    x_valid, y_valid = util.load_dataset(valid_path, label_col='y', add_intercept=True)
 
-    # This picture is omitted. If you want to view it, please see Solution
-    # plot...
-    
-    alpha = model_d.predict(x_vaild)
+    alpha = np.mean(model_d.predict(x_valid))
+
+    correction = 1 + np.log(2 / alpha - 1) / model_d.theta[0]
+    util.plot(x_test, t_test, model_d.theta, 'output/p02e.png', correction)
 
     t_pred_e = y_pred / alpha
-
-    np.savetxt(pred_path_e, t_pred_e > 0.5, fmt="%d")
+    np.savetxt(pred_path_e, t_pred_e > 0.5, fmt='%d')
     # *** END CODER HERE

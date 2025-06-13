@@ -60,7 +60,7 @@ class PoissonRegression(LinearModel):
             # Math: np.exp(-20) < x @ self.theta < np.exp(20)
             lambda_hat = np.exp(np.clip(x @ self.theta, -20, 20))
 
-            grad = ((y - lambda_hat) @ x.T) / m
+            grad = np.dot((y - lambda_hat), x) / m
 
             self.theta += self.step_size * grad
 

@@ -394,6 +394,53 @@ $$
 ##### (a)
 $$
 \begin{align*}
+\text{i} \\
+\text{Perceptron Algorithm Update \ $\theta^{(t)} \;=\; \theta^{(t-1)}
+\;+\;\alpha\bigl(y^{(t)} - h_{\theta^{(t-1)}}(x^{(t)})\bigr)\,\phi\bigl(x^{(t)}\bigr)$} \\
+\\
+\text{We use \ $\beta_t \;=\; \alpha\bigl(y^{(t)} - h_{\theta^{(t-1)}}(x^{(t)})\bigr)$} \\
+\\
+\text{So, \ $\theta^{(t)} = \theta^{(t-1)} + \beta_t\,\phi\bigl(x^{(t)}\bigr)$} \\
+\\
+\text{We know $\theta^{(0)} = \vec 0$} \\
+\\
+\sum_{j=1}^0 \beta_j\,\phi\bigl(x^{(j)}\bigr)
+= 0 \\
+\\
+\text{Assume that for some i - 1 >= 0, We have }\\
+\\
+\theta^{(i-1)} \;=\; \sum_{j=1}^{i-1} \beta_j\,\phi\bigl(x^{(j)}\bigr) \\
+\\
+\text{We know \ $\theta^{(i)}
+= \theta^{(i-1)} + \beta_i\,\phi\bigl(x^{(i)}\bigr)$} \\
+\\
+\theta^{(i)}
+= \Bigl(\sum_{j=1}^{i-1} \beta_j\,\phi\bigl(x^{(j)}\bigr)\Bigr)
+  + \beta_i\,\phi\bigl(x^{(i)}\bigr)
+= \sum_{j=1}^{i} \beta_j\,\phi\bigl(x^{(j)}\bigr) \\
+\\
+\text{ii} \\
+\\
+h_{\theta^{(i)}}\left(\phi\left(x^{(i+1)}\right)\right)
+= g\left(\theta^{(i)T} \phi\left(x^{(i+1)}\right)\right) 
+= \text{sign}\left(\theta^{(i)T} \phi\left(x^{(i+1)}\right)\right) 
+&= \text{sign}\left(\sum_{j=1}^{i} \beta_j \phi\left(x^{(j)}\right)^T \phi\left(x^{(i+1)}\right)\right) \\
+&= \text{sign}\left(\sum_{j=1}^{i} \beta_j \left\langle \phi\left(x^{(j)}\right), \phi\left(x^{(i+1)}\right) \right\rangle\right) \\
+&= \text{sign}\left(\sum_{j=1}^{i} \beta_j K\left(x^{(j)}, x^{(i+1)}\right)\right)
+\\
+\text{iii} \\
+\\
+\theta^{(i+1)} := \theta^{(i)} + \alpha \left(y^{(i+1)} - h_{\theta^{(i)}}\left(\phi\left(x^{(i+1)}\right)\right)\right) \phi\left(x^{(i+1)}\right) 
+
+= \sum_{j=1}^{i} \beta_j \phi\left(x^{(j)}\right) + \alpha \left(y^{(i+1)} - \text{sign}\left(\sum_{j=1}^{i} \beta_j K\left(x^{(j)}, x^{(i+1)}\right)\right)\right) \phi\left(x^{(i+1)}\right) \\
+
+\beta_{i+1} = \alpha \left(y^{(i+1)} - \text{sign}\left(\sum_{j=1}^{i} \beta_j K\left(x^{(j)}, x^{(i+1)}\right)\right)\right)
 
 \end{align*}
 $$
+
+##### (c)
+The dot product kernel is only effective for linear models.
+
+### 6.
+##### (a)

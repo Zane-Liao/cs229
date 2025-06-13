@@ -81,8 +81,9 @@ class LocallyWeightedLinearRegression(LinearModel):
         pred_y = np.zeros(m, dtype=np.float64)
         
         for i in range(m):
-            weights = np.exp(-np.sum(np.square(x - x[i]), axis=1)
-                             / (2 * self.tau ** 2))
+            diff = self.x - x[i]
+            square = -np.sum(diff ** 2, axis=1)
+            weights = np.exp(square / (2 * self.tau ** 2))
             W = np.diag(weights)
             
             pred_y[i] = (

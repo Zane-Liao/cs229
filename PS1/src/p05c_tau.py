@@ -23,14 +23,15 @@ def main(tau_values, train_path, valid_path, test_path, pred_path):
     x_test, y_test = util.load_dataset(test_path, add_intercept=True)
 
     model = LocallyWeightedLinearRegression(tau=0.5)
-    pred_y = model.fit(x_train, y_train)
+    model.fit(x_train, y_train)
+    pred_y = model.predict(x_valid)
     mse_lists = []
 
     # Search tau_values for the best tau (lowest MSE on the validation set)
     for tau in tau_values:
         model.tau = tau
 
-        MSE = np.mean(np.square(pred_y - y_valid))
+        MSE = np.mean((pred_y - y_valid)**2)
         mse_lists.append(MSE)
         print(f"tau: {tau}, MSE: {MSE}")
         # Plot data...

@@ -16,6 +16,7 @@ def initial_state():
     """
 
     # *** START CODE HERE ***
+    return []
     # *** END CODE HERE ***
 
 
@@ -33,6 +34,10 @@ def predict(state, kernel, x_i):
         Returns the prediction (i.e 0 or 1)
     """
     # *** START CODE HERE ***
+    theta = 0
+    for beta, x in state:
+        theta += beta * kernel(x, x_i)
+    return sign(theta)
     # *** END CODE HERE ***
 
 
@@ -47,6 +52,8 @@ def update_state(state, kernel, learning_rate, x_i, y_i):
         y_i: A 0 or 1 indicating the label for a single instance
     """
     # *** START CODE HERE ***
+    beta = learning_rate * (y_i - predict(state, kernel, x_i))
+    state.append((beta, x_i))
     # *** END CODE HERE ***
 
 
