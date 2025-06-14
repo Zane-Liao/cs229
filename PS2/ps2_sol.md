@@ -444,3 +444,20 @@ The dot product kernel is only effective for linear models.
 
 ### 6.
 ##### (a)
+Solution
+$$
+\begin{align*}
+
+p(y = 1|x) = \frac{\prod_{j=1}^{d} p(x_j|y = 1)p(y = 1)}{\prod_{j=1}^{d} p(x_j|y = 1)p(y = 1) + \prod_{j=1}^{d} p(x_j|y = 0)p(y = 0)} \\
+\\
+= \frac{1}{1 + \frac{\prod_{j=1}^{d} p(x_j|y=0)p(y=0)}{\prod_{j=1}^{d} p(x_j|y=1)p(y=1)}}\\
+\\
+p(y = 1|x) > 0.5 \\
+\\
+\prod_{j=1}^{d} p(x_j|y = 1)p(y = 1) > \prod_{j=1}^{d} p(x_j|y = 0)p(y = 0) \\
+\\
+\log \left(\prod_{j=1}^{d} p(x_j|y = 1)p(y = 1)\right) > \log \left(\prod_{j=1}^{d} p(x_j|y = 0)p(y = 0)\right) \\
+\\
+\sum_{j=1}^{d} \log p(x_j|y = 1) + \log p(y = 1) > \sum_{j=1}^{d} \log p(x_j|y = 0) + \log p(y = 0)
+\end{align*}
+$$
