@@ -443,7 +443,7 @@ $$
 The dot product kernel is only effective for linear models.
 
 ### 6.
-##### (a)
+##### (b)
 Solution
 $$
 \begin{align*}
