@@ -1,1 +1,9 @@
 .DS_Store
+/PS1/src/output
+/PS2/src/output
+/PS3/src/output
+/PS4/src/output
+/PS1/src/__pycache__
+/PS2/src/__pycache__
+/PS3/src/__pycache__
+/PS4/src/__pycache__
