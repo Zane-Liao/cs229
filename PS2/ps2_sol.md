@@ -1,6 +1,6 @@
 # PS2 Solution
 
-### 1.
+### 1. Logistic Regression: Training stability
 
 ##### (a)
 
@@ -41,7 +41,7 @@ within the boundary, and no longer penalizes the data outside the boundary.
 From a mathematical point of view, $y(w^T x + b) \geq 1$, the loss is 0.
 
 ----
-### 2.
+### 2. Model Calibration
 
 ###### (a)
 Prove: (a,b) = (0,1)<br>
@@ -135,7 +135,7 @@ $$
 So the model will not be well-calibrated.
 
 ---
-### 3.
+### 3. Bayesian Interpretation of Regularization
 
 ##### (a)
 Prove: $$\theta_{MAP} = \arg\max_\theta p(y|x,\theta)p(\theta)$$
@@ -289,7 +289,8 @@ J(\theta) = ||X\theta - \vec{y}||_2^2 + \gamma||\theta||_1 \\
 \end{align*}
 $$
 
-### 4.
+### 4. Constructing kernel function
+
 Solution:
 ##### (a)
 Prove: $K(x,z) = K_1(x,z) + K_2(x,z)$
@@ -389,7 +390,7 @@ $$
 \end{align*}
 $$
 
-### 5.
+### 5. Kernelization of Perceptron
 
 ##### (a)
 $$
@@ -442,7 +443,10 @@ $$
 ##### (c)
 The dot product kernel is only effective for linear models.
 
-### 6.
+### 6. Sorting spam mail
+
+##### (a) Code Problem...
+
 ##### (b)
 Solution
 $$

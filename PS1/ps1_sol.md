@@ -1,6 +1,8 @@
 
 ### 1. Linear Classifiers (logistic regression and GDA)
-(a)
+
+##### (a)
+
 $$\begin{align*}
 
 \frac{\partial J(\theta)}{\partial \theta_j} &= -\frac{1}{m} \sum_{i=1}^{m} y^{(i)} \frac{g(\theta^T x^{(i)})[1 - g(\theta^T x^{(i)})]}{g(\theta^T x^{(i)})} x_j^{(i)} - (1 - y^{(i)}) \frac{g(\theta^T x^{(i)})[1 - g(\theta^T x^{(i)})]}{1 - g(\theta^T x^{(i)})} x_j^{(i)} \tag{1.1.1} \\
@@ -19,8 +21,11 @@ $$H = \frac{1}{m} [X^T \cdot g(X\theta) \cdot (1 - g(X\theta))] X$$
 $$z^T H z = \frac{1}{m} \sum_{i=1}^{m} \sum_{j=1}^{n} \sum_{k=1}^{n} g(\theta^T x^{(i)}) [1 - g(\theta^T x^{(i)})] x_j^{(i)} x_k^{(i)} z_j z_k$$
 
 $$= \frac{1}{m} \sum_{i=1}^{m} g(\theta^T x^{(i)}) [1 - g(\theta^T x^{(i)})] [(x^{(i)})^T z]^2 \geq 0$$
-(b) Code Problem...
-(c)
+
+##### (b) Code Problem...
+
+##### (c)
+
 $$
 \begin{align*}
 
@@ -82,7 +87,8 @@ $$
 
 \end{align*}
 $$
-(d)
+
+##### (d)
 
 $$
 \begin{align*}
@@ -125,7 +131,9 @@ p(y^{(i)}; \phi) &= \phi^{\mathbf{1}\{y^{(i)}=1\}} (1-\phi)^{1-\mathbf{1}\{y^{(i
 $$
 
 ### 2. Incomplete, Positive-Only Labels
-(a)
+
+##### (a)
+
 $$ 
 
 \begin{align*}
@@ -174,11 +182,12 @@ h(x^{(i)}) & \approx p(y^{(i)} = 1 \ \vert \ x^{(i)}) \\
 \end{align*}
 $$
 
-(c)(d)(e) Code Problem...
+##### (c)(d)(e) Code Problem...
 
 ### 3. Poisson Regression
 
-(a)
+##### (a)
+
 $$
 \begin{align*}
 
@@ -192,7 +201,8 @@ p(y; \ \lambda) &= \frac{e^{- \lambda} \ \lambda^y}{y \ !} \\
 $$
 where $b(y) = \frac{1}{y \ !}$, $T(y) = y$, $\eta = \log \lambda$ and $a(\eta) = \exp(\eta)$.
 
-(b)
+##### (b)
+
 $$
 \begin{align*}
 
@@ -205,7 +215,7 @@ $$
 \end{align*}
 $$
 
-(c)
+##### (c)
 
 Recall the design choices of GLM:
 1. $y \ \vert \ x; \ \theta \sim \mathrm{ExponentialFamily} (\eta)$
@@ -254,7 +264,8 @@ $$\theta := \theta + \alpha \ \big( y^{(i)} - h_\theta (x^{(i)}) \big) \ x^{(i)}
 
 ### 4. Convexity of Generalized Linear Models
 
-(a)
+##### (a)
+
 Proof:
 $$
 \begin{align*}
@@ -293,7 +304,8 @@ $$
 $$
 The mean of an exponential family distribution is the first derivative of the log-partition function w.r.t. the natural parameter.
 
-(b)
+##### (b)
+
 Proof:
 $$
 \begin{align*}
@@ -330,7 +342,8 @@ $$
 $$
 The variance of an exponential family distribution is the second derivative of the log-partition function w.r.t. the natural parameter.
 
-(c)
+##### (c)
+
 Recall the NLL
 $$
 \begin{align*}
@@ -368,7 +381,8 @@ which means the Hessian is PSD, showing that the NLL loss of GLM is convex.
 
 ### 5. Locally weighted linear regression
 
-(a)
+##### (a)
+
 i
 Recall the cost function
 $$
