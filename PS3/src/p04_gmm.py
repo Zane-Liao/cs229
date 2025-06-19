@@ -14,7 +14,7 @@ def main(is_semi_supervised, trial_num):
           .format('semi-supervised' if is_semi_supervised else 'unsupervised'))
 
     # Load dataset
-    train_path = os.path.join('..', 'data', 'ds3_train.csv')
+    train_path = os.path.join('..', 'data', 'ds4_train.csv')
     x, z = load_gmm_dataset(train_path)
     x_tilde = None
 
@@ -32,6 +32,23 @@ def main(is_semi_supervised, trial_num):
     # phi should be a numpy array of shape (K,)
     # (3) Initialize the w values to place equal probability on each Gaussian
     # w should be a numpy array of shape (m, K)
+    m = x.shape[0]
+    idx = np.random.permutation(m)
+    group_member= int(m / K)
+    mu = []
+    sigma = []
+
+    for i in range(K):
+    	if i!=K-1:
+    		x_temp = x[idx[i*group_member: (i+1)*group_member], :]
+    	else:
+    		x_temp = x[idx[i*group_member: m], :]
+
+    	mu_temp = np.mean(x_temp, axis=0)
+    	mu.append(mu_temp)
+    	sigma.append((x_temp-mu_temp).T.dot(x_temp-mu_temp) / x_temp.shape[0])
+    phi = np.ones(K) / K
+    w = np.ones((m, K)) / K
     # *** END CODE HERE ***
 
     if is_semi_supervised:
@@ -74,7 +91,7 @@ def run_em(x, w, phi, mu, sigma):
     it = 0
     ll = prev_ll = None
     while it < max_iter and (prev_ll is None or np.abs(ll - prev_ll) >= eps):
-        pass  # Just a placeholder for the starter code
+        # Just a placeholder for the starter code
         # *** START CODE HERE
         # (1) E-step: Update your estimates in w
         # (2) M-step: Update the model parameters phi, mu, and sigma
@@ -82,7 +99,25 @@ def run_em(x, w, phi, mu, sigma):
         # By log-likelihood, we mean `ll = sum_x[log(sum_z[p(x|z) * p(z)])]`.
         # We define convergence by the first iteration where abs(ll - prev_ll) < eps.
         # Hint: For debugging, recall part (a). We showed that ll should be monotonically increasing.
+        
+        # E-step
+        for i in range(K):
+        	w[:, i] = np.exp(-0.5 * ((x-mu[i]).dot(np.linalg.inv(sigma[i])) * (x-mu[i])).sum(axis=1)) / (np.linalg.det(sigma[i])**0.5) * phi[i]
+        w /= w.sum(axis=1)[:, None]
+        # M-step
+        phi = np.mean(w, axis=0)
+        for i in range(K):
+        	mu[i] = x.T.dot(w[:, i]) / sum(w[:, i])
+        	sigma[i] = (w[:, i][:, None] * (x-mu[i])).T.dot(x-mu[i]) / sum(w[:, i])
+
+        it += 1
+        prev_ll = ll
+        p_xz = np.zeros(w.shape)
+        for i in range(K):
+        	p_xz[:, i] = np.exp(-0.5 * ((x-mu[i]).dot(np.linalg.inv(sigma[i])) * (x-mu[i])).sum(axis=1)) / (np.linalg.det(sigma[i])**0.5) * phi[i]
+        ll = np.sum(np.log(np.sum(p_xz, axis=1)))
         # *** END CODE HERE ***
+    print(f'Number of iterations:{it}')
 
     return w
 
@@ -116,14 +151,33 @@ def run_semi_supervised_em(x, x_tilde, z, w, phi, mu, sigma):
     it = 0
     ll = prev_ll = None
     while it < max_iter and (prev_ll is None or np.abs(ll - prev_ll) >= eps):
-        pass  # Just a placeholder for the starter code
+        pass # Just a placeholder for the starter code
         # *** START CODE HERE ***
         # (1) E-step: Update your estimates in w
         # (2) M-step: Update the model parameters phi, mu, and sigma
         # (3) Compute the log-likelihood of the data to check for convergence.
         # Hint: Make sure to include alpha in your calculation of ll.
         # Hint: For debugging, recall part (a). We showed that ll should be monotonically increasing.
+        
+        # E-step
+        for i in range(K):
+        	w[:, i] = np.exp(-0.5 * ((x-mu[i]).dot(np.linalg.inv(sigma[i])) * (x-mu[i])).sum(axis=1)) / (np.linalg.det(sigma[i])**0.5) * phi[i]
+        w /= w.sum(axis=1)[:, None]
+        # M-step
+        for i in range(K):
+        	phi[i] = (sum(w[:, i]) + alpha * sum(z==i)) / (x.shape[0] + alpha * x_tilde.shape[0])
+        	x_tilde_i = x_tilde[z.reshape(-1,)==i]
+        	mu[i] = (x.T.dot(w[:, i]) + alpha * x_tilde_i.sum(axis=0)) / (sum(w[:, i]) + alpha * sum(z==i))
+        	sigma[i] = ((w[:, i][:, None] * (x-mu[i])).T.dot(x-mu[i]) + alpha * (x_tilde_i-mu[i]).T.dot(x_tilde_i-mu[i])) / (sum(w[:, i]) + alpha * sum(z==i))
+
+        it += 1
+        prev_ll = ll
+        p_xz = np.zeros(w.shape)
+        for i in range(K):
+        	p_xz[:, i] = np.exp(-0.5 * ((x-mu[i]).dot(np.linalg.inv(sigma[i])) * (x-mu[i])).sum(axis=1)) / (np.linalg.det(sigma[i])**0.5) * phi[i]
+        ll = np.sum(np.log(np.sum(p_xz, axis=1)))
         # *** END CODE HERE ***
+    print(f'Number of iterations:{it}')
 
     return w
 
@@ -151,7 +205,7 @@ def plot_gmm_preds(x, z, with_supervision, plot_id):
         alpha = 0.25 if z_ < 0 else 0.75
         plt.scatter(x_1, x_2, marker='.', c=color, alpha=alpha)
 
-    file_name = 'p03_pred{}_{}.pdf'.format('_ss' if with_supervision else '', plot_id)
+    file_name = 'p04_pred{}_{}.png'.format('_ss' if with_supervision else '', plot_id)
     save_path = os.path.join('output', file_name)
     plt.savefig(save_path)
 
@@ -197,5 +251,5 @@ if __name__ == '__main__':
         # Once you've implemented the semi-supervised version,
         # uncomment the following line.
         # You do not need to add any other lines in this code block.
-        # main(with_supervision=True, trial_num=t)
+        main(is_semi_supervised=True, trial_num=t)
         # *** END CODE HERE ***
