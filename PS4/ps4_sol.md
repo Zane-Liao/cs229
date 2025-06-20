@@ -105,8 +105,19 @@ $$
 
 ### 3. Principal components analysis(PCA)
 
+Prove: $\arg \min_{u:u^T u=1} \sum_{i=1}^m ||x^{(i)} - f_u(x^{(i)})||_2^2$
+
 $$
 \begin{align*}
+
+f_u(x) = \arg \min_{v \in V} ||x - v||^2 = uu^{T}x
+\\
+\arg \min_{u:u^T u=1} \sum_{i=1}^m ||x^{(i)} - f_u(x^{(i)})||_2^2 &= \arg \min_{u:u^T u=1} \sum_{i=1}^m ||x^{(i)} - uu^{T}x||_2^2 \\
+&= \arg \min_{u:u^T u=1} \sum_{i=1}^m (x^{(i)} - u^{T}ux^{(i)})^{T}(x^{(i)} - u^{T}ux^{(i)}) \\
+&= \arg \min_{u:u^T u=1} \sum_{i=1}^m x^{(i)^{T}}x^{(i)} - x^{(i)}u^{T}ux^{(i)} \\
+&= \arg \max_{u:u^T u=1} \sum_{i=1}^m x^{(i)^{T}}u^{T}ux^{(i)} \\
+&= \arg \max_{u:u^T u=1} u^{T}(\sum_{i=1}^mx^{(i)^{T}}x^{(i)})u \\
+&= \arg \max_{u:u^T u=1} u^{T}(\sum_{i=1}^mx^{(i)}x^{(i)^{T}})u
 
 \end{align*}
 $$
