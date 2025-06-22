@@ -1,7 +1,6 @@
 # PS4-Solution
 
 ### 1. Neural Networks: MNIST image classification(code Problem...)
-...
 
 ### 2. Oﬀ Policy Evaluation And Causal Inference
 
@@ -128,6 +127,59 @@ $$
 
 $$
 \begin{align*}
+\text{We Know $g'(z) \;=\;\frac{1}{\sqrt{2\pi}}\exp\Bigl(-\tfrac12 z^2\Bigr)$} \\
+
+\ell(W) = \sum_{i=1}^n \left[\log |W| + \sum_{j=1}^d \log g'(w_j^T x^{(i)})\right]
+&= \sum_{i=1}^n \log|W| + \sum_{j=1}^d\sum_{i=1}^n \log \left(\frac{1}{\sqrt
+
+{2\pi}}\exp(-\frac{1}{2}w_j^T x^{(i)})^{2}\right) \\
+&= \sum_{i=1}^n \log|W| + \sum_{j=1}^d\sum_{i=1}^n \left(-\frac{1}{2}\log(2\pi) + 
+
+\log (-\frac{1}{2}w_j^T x^{(i)})^{2}\right) \\
+&= n\log|W| - \frac{dn}{2}\log(2\pi) + \sum_{j=1}^d\sum_{i=1}^n (-\frac{1}{2}w_j^T x^{(i)})^{2} \\
+
+\text{Drop $\frac{dn}{2}\log(2\pi)$, Nothing to do with W} \\
+
+&= n\log|W| - \sum_{j=1}^d\sum_{i=1}^n (\frac{1}{2}w_j^T x^{(i)})^{2} \\
+
+\nabla_W n\log|W| = n(W^{-1})^{T} \\
+
+\sum_{j=1}^d (w_j^\top x)^2 = \|W\,x\|^2 = (W x)^\top (W x) = x^\top W^\top W\,x
+= \bigl(W\,x\,x^\top W^\top\bigr)
+\\
+
+\nabla_W\;\tfrac12\,\|W x\|^2 = \tfrac12\;\nabla_W\, \bigl(Wxx^\top W^\top\bigr)
+= \tfrac12\;2\,W\,x\,x^\top
+= W\,x\,x^\top \\
+
+\nabla_W\Bigl(\tfrac12\sum_{i=1}^n\|W x^{(i)}\|^2\Bigr)
+= \sum_{i=1}^n W\,x^{(i)}\,x^{(i)\top}
+= W\;\Bigl(\sum_{i=1}^n x^{(i)} x^{(i)\top}\Bigr)
+= W\,X^\top X \\
+
+\nabla_W \ell(W) &= \nabla_W \left(n\log|W| \right) - \nabla_W \left(\sum_{j=1}^d\sum_{i=1}^n (\frac{1}{2}w_j^T x^{(i)})^{2} \right) \\
+
+&= n(W^{-1})^{T} - WX^{T}X \\
+
+\text{Set $n(W^{-1})^{T} - WX^{T}X = 0$} \\
+&= 0 
+\\
+\text{We use: $W^{T}$ => $n(W^{-1})^{T} = WX^{T}X$}
+\\
+n(W^{-1})^{T}W^{T} = W^{T}WX^{T}X \\
+nI = W^{T}WX^{T}X \\
+W^{T}W = n(X^{T}X)^{-1} \\
+
+\\
+\text{We Know $C = X^\top X$ and $C = U\,\Lambda\,U^\top$, Whitening Matrix }\\
+W^\top W 
+= (\sqrt{n}\,C^{-1/2})^\top(\sqrt{n}\,C^{-1/2})
+= n\,(C^{-1/2}C^{-1/2})
+= n\,C^{-1} \\
+\text{We Know Orthogonal Matrix $R^\top R = I$, Define $W' = R\,W$ } \\
+W'^\top W' = (R\,W)^\top (R\,W) = W^\top R^\top R\,W = W^\top W = n\,C^{-1}
+\\
+\text{So, We have $W$ => $W^\top W = n\,C^{-1}$, $W'$ => $n\,C^{-1}$}
 
 \end{align*}
 $$
@@ -137,23 +189,59 @@ $$
 $$
 \begin{align*}
 
+\text{We Know $f_L(s) = \frac{1}{2} \exp(-|s|)$ and $\ell(W) = \sum_{i=1}^n \left[\log |W| + \sum_{j=1}^d \log g'(w_j^T x^{(i)})\right]$} \\
+
+W := W + \alpha (\nabla_W \ell(W)) \\
+
+\nabla_W \ell(W) &= \nabla_W (\log|W| - \sum_{j=1}^d \log \frac{1}{2}\exp(- |w_j^T x^{(i)}|)) \\
+
+\text{We Know $\log\bigl(\tfrac12\,e^{-\lvert w_j^\top x\rvert}\bigr)
+= \log\tfrac12 \;-\;\lvert w_j^\top x\rvert$ Drop $\log\frac{1}{2}$} \\
+
+\text{$\frac{\partial}{\partial w_j}\;\lvert w_j^\top x\rvert
+= sign(w_j^{T} x)\;x$} \\
+
+\nabla_W \sum_{j=1}^{d} |w^{T}_jx| = sign(Wx)x^{T} \\
+
+&= (W^{-1})^{T} - sign(Wx)x^{T} \\
+
+W := W + \alpha ((W^{-1})^{T} - sign(Wx^{(i)})x^{(i)^{T}})
+
 \end{align*}
 $$
 
-##### (c) Cocktail Party Problem
-
-$$
-\begin{align*}
-
-\end{align*}
-$$
+##### (c) Cocktail Party Problem(Code Problem...)
 
 ### 5. Markov decision processes
 
 ##### (a)
 
+Prove: $||B(V_1) - B(V_2)||_\infty \leq \gamma||V_1 - V_2||_\infty$ , where 
+$||V||_\infty = \max_{s \in S} |V(s)|$
+
 $$
 \begin{align*}
+
+\text{We Know} \\
+||B(V_1) - B(V_2)||_\infty = \max_{s \in S} |B(V_1)(s) - B(V_2)(s)| \\
+
+B(V_1)(s) - B(V_2)(s) = \max_{a \in A} \sum_{s' \in S} P_{sa}(s')[R_{sa}(s') + \gamma V_1(s')] - \max_{a \in A} \sum_{s' \in S} P_{sa}(s')[R_{sa}(s') + \gamma V_2(s')] \\
+
+\text{We have $\max_a f_a - \max_a g_a \leq \max_a (f_a - g_a)$}
+\\
+B(V_1)(s) - B(V_2)(s) \leq \max_{a \in A} \sum_{s' \in S} P_{sa}(s')[\gamma V_1(s') - \gamma V_2(s')] \\
+
+= \gamma \max_{a \in A} \sum_{s' \in S} P_{sa}(s')[V_1(s') - V_2(s')] \\
+
+\text{We Know $\Bigl|\sum_{s'} a_{s'}\Bigr| \;\le\; \sum_{s'} |a_{s'}|$ and $c\ge0$ => $c\,|x|$}
+\\
+\Bigl|\sum_{s'}P_{sa}(s')[V_1(s')-V_2(s')]\Bigr| \;\le\; \sum_{s'}P_{sa}(s')\,|V_1(s')-V_2(s')| \\
+\text{We have $\bigl|V_1(s')-V_2(s')\bigr| \;\le\; \|V_1 - V_2\|_\infty$} \\
+
+\text{Merge:}\\
+\Bigl|\sum_{s'}P_{sa}(s')[V_1(s')-V_2(s')]\Bigr| \;\le\; \sum_{s'}P_{sa}(s')\,\bigl|V_1(s')-V_2(s')\bigr| \;\le\; \sum_{s'}P_{sa}(s')\;\|V_1-V_2\|_\infty
+\\
+\max_{s \in S} \left|B(V_1)(s) - B(V_2)(s)\right|\;\le\;\gamma\;\|V_1-V_2\|_\infty \\
 
 \end{align*}
 $$
@@ -163,7 +251,17 @@ $$
 $$
 \begin{align*}
 
+\text{Suppose we have two fixed points $U, V$ where $B(V)=V$ $B(U)=U$} \\
+
+||V-U\||\infty = ||B(V)-B(U)||_\infty \le \gamma||V-U||_\infty \\
+
+\text{$\gamma<1$, We have:} \\ 
+
+||V-U||_\infty = 0 \\
+
+\text{$V = U$ is only Solution}
+
 \end{align*}
 $$
 
-### 6. Reinforcement Learning: The inverted pendulum
+### 6. Reinforcement Learning: The inverted pendulum(Code Problem...)
