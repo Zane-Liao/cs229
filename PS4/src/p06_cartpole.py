@@ -125,6 +125,9 @@ def choose_action(state, mdp_data):
     """
 
     # *** START CODE HERE ***
+    expect_value = mdp_data['value'].dot(mdp_data['transition_probs'][state])
+
+    return np.argmax(expect_value)
     # *** END CODE HERE ***
 
 def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_state, reward):
@@ -149,6 +152,12 @@ def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_stat
     """
 
     # *** START CODE HERE ***
+    mdp_data['transition_counts'][state, new_state, action] += 1
+
+    if reward == -1:
+        mdp_data['reward_counts'][new_state, 0] += 1
+
+    mdp_data['reward_counts'][new_state, 1] += 1
     # *** END CODE HERE ***
 
     # This function does not return anything
@@ -172,6 +181,19 @@ def update_mdp_transition_probs_reward(mdp_data):
     """
 
     # *** START CODE HERE ***
+    transition_counts = mdp_data['transition_counts']
+    num_counts = transition_counts.sum(axis=1)
+    num_states = transition_counts.shape[0]
+    for i in range(num_states):
+        for a in range(2):
+            if  num_counts[i, a]  != 0:
+                mdp_data['transition_probs'][i, :, a] = transition_counts[i, :, a] / num_counts[i, a]
+
+    reward_counts = mdp_data['reward_counts']
+    for k in range(num_states):
+        sum_count = reward_counts[k, 1]
+        if sum_count != 0:
+            mdp_data['reward'][k] = -reward_counts[k, 0] / sum_count
     # *** END CODE HERE ***
 
     # This function does not return anything
@@ -198,6 +220,20 @@ def update_mdp_value(mdp_data, tolerance, gamma):
     """
 
     # *** START CODE HERE ***
+    iters = 0
+    transition_probs = mdp_data['transition_probs']
+
+    while True:
+        iters += 1
+
+        value = mdp_data['value']
+        new_value = mdp_data['reward'] + gamma * value.dot(transition_probs).max(axis=1)
+        mdp_data['value'] = new_value
+
+        if np.max(np.abs(value - new_value)) < tolerance:
+            break
+
+    return iters==1
     # *** END CODE HERE ***
 
 def main(plot=True):
