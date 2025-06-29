@@ -1,5 +1,6 @@
 # cs229
 - This is the problem set for cs229 in 2018. It will only contain code problems, but not general diagram-related problems (see solutions).
+- The coding questions in cs229 were not very good, and I skipped most of them(I studied other relatively practical tutorials).
 - I wrote down all the whiteboard derivations from the Youtube lectures and the steps of some important exercises on paper.
 ![afternoon](PS0/hoooo.jpg)
 - I deleted KL divergence, Fisher information and natural gradient, which should be attributed to relatively theoretical machine learning.
