@@ -1,8 +1,9 @@
 # cs229
 - This is the problem set for cs229 in 2018. It will only contain code problems, but not general diagram-related problems (see solutions).
-- I wrote all the whiteboard derivations on Youtube on paper.
+- I wrote down all the whiteboard derivations from the Youtube lectures and the steps of some important exercises on paper.
+![afternoon](PS0/hoooo.jpg)
 - I deleted KL divergence, Fisher information and natural gradient, which should be attributed to relatively theoretical machine learning.
-- I will study a convex optimization course later, and then study cs229m, plus the above-mentioned.
+- If I have time to delve deeper into AI, I will first take a convex optimization course, then cs229m, and then add the above content.
 - For some common questions that I don’t know or are more complicated, I refer to Solution.
 - Future I will integrate other algorithms (not covered in cs229), write the implementation of each algorithm, and then I will upload it to my ML-notes.
 - If you need to view _sol.md, please download vscode and install it, or Obsidian.
