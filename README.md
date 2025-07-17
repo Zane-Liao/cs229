@@ -1,7 +1,5 @@
 # Stanford cs229
 
-<img height="25" src="">
-
 - This is the problem set for cs229 in 2018. This repository contains some of my process of learning machine learning
 - The coding questions in cs229 were not very good, and I skipped most of them(I studied other relatively practical tutorials).
 - I wrote down all the whiteboard derivations from the Youtube lectures and the steps of some important exercises on paper.
