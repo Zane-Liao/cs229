@@ -1,7 +1,7 @@
 
-### 1. Linear Classifiers (logistic regression and GDA)
+## 1. Linear Classifiers (logistic regression and GDA)
 
-##### (a)
+### (a) Find the Hessian H of this function, and show that for any vector z, it holds true that $z^{T}Hz ≥ 0$
 
 $$\begin{align*}
 
@@ -22,9 +22,9 @@ $$z^T H z = \frac{1}{m} \sum_{i=1}^{m} \sum_{j=1}^{n} \sum_{k=1}^{n} g(\theta^T 
 
 $$= \frac{1}{m} \sum_{i=1}^{m} g(\theta^T x^{(i)}) [1 - g(\theta^T x^{(i)})] [(x^{(i)})^T z]^2 \geq 0$$
 
-##### (b) Code Problem...
+### (b) Code Problem...
 
-##### (c)
+### (c) Prove that the classifier produced by GDA has a linear decision boundary
 
 $$
 \begin{align*}
@@ -62,10 +62,10 @@ $$
 \Sigma^{-1}=>X^{T}\Sigma^{-1}\mu_k = \mu_k^{T}\Sigma^{-1}
 $$
 $$
-\begin{align*}
+\begin{aligned}
 
-(x - \mu_1)^{T}\Sigma^{-1}(x - \mu_1) - (x - \mu_0)^{T}\Sigma^{-1}(x - \mu_0)
-
+& (x - \mu_1)^{T}\Sigma^{-1}(x - \mu_1) - (x - \mu_0)^{T}\Sigma^{-1}(x - \mu_0)
+\\
 &= [x^{T}\Sigma^{-1}x - x^{T}\Sigma^{-1}\mu_1 - \mu_1^{T}\Sigma^{-1}x + \mu_1^{T}\Sigma^{-1}\mu_1] - [x^{T}\Sigma^{-1}x - x^{T}\Sigma^{-1}\mu_0 - \mu_0^{T}\Sigma^{-1}x + \mu_0^{T}\Sigma^{-1}\mu_1] \\
 
 &= [x^{T}\Sigma^{-1}x - x^{T}\Sigma^{-1}x] + [(-x^{T}\Sigma^{-1}\mu_1 - \mu_1^{T}\Sigma^{-1}x) - (-x^{T}\Sigma^{-1}\mu_0 - \mu_0^{T}\Sigma^{-1}x)]
@@ -85,54 +85,55 @@ $$
 
 &= [(\Sigma^{-1}(\mu_1 - \mu_0)^{T}x + \frac{1}{2}(\mu_0 + \mu_1)^{T}\Sigma^{-1}(\mu_0 - \mu_1)] \\
 
-\end{align*}
+\end{aligned}
 $$
 
-##### (d)
+### (d) Prove that the maximum likelihood estimates of the parameters $\phi$, $\mu_0$, $\mu_1$, and $\Sigma$ are indeed given by the formula in the question
 
 $$
-\begin{align*}
-\mu_{y^{(i)}} &= \mathbf{1}\{y^{(i)} = 0\}\mu_0 + \mathbf{1}\{y^{(i)} = 1\}\mu_1 \\
+\begin{aligned}
+& \mu_{y^{(i)}} = \mathbf{1}\{y^{(i)} = 0\}\mu_0 + \mathbf{1}\{y^{(i)} = 1\}\mu_1 \\
 
-p(x^{(i)}|y^{(i)}; \mu_0, \mu_1, \Sigma) &= \frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}} \exp\left\{-\frac{1}{2}(x^{(i)} - \mu_{y^{(i)}})^T \Sigma^{-1} (x^{(i)} - \mu_{y^{(i)}})\right\} \\
-
-
-p(y^{(i)}; \phi) &= \phi^{\mathbf{1}\{y^{(i)}=1\}} (1-\phi)^{1-\mathbf{1}\{y^{(i)}=1\}} \\
+& p(x^{(i)}|y^{(i)}; \mu_0, \mu_1, \Sigma) = \frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}} \exp\left\{-\frac{1}{2}(x^{(i)} - \mu_{y^{(i)}})^T \Sigma^{-1} (x^{(i)} - \mu_{y^{(i)}})\right\} \\
 
 
-\ell &= \sum_{i=1}^m \log p(x^{(i)}|y^{(i)}; \mu_0, \mu_1, \Sigma) + \sum_{i=1}^m \log p(y^{(i)}; \phi) \\
+& p(y^{(i)}; \phi) = \phi^{\mathbf{1}\{y^{(i)}=1\}} (1-\phi)^{1-\mathbf{1}\{y^{(i)}=1\}} \\
+
+
+& \ell = \sum_{i=1}^m \log p(x^{(i)}|y^{(i)}; \mu_0, \mu_1, \Sigma) + \sum_{i=1}^m \log p(y^{(i)}; \phi) \\
 
 &= \sum_{i=1}^m \log \frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}} \exp\left\{-\frac{1}{2}(x^{(i)} - \mu_{y^{(i)}})^T \Sigma^{-1} (x^{(i)} - \mu_{y^{(i)}})\right\} + \sum_{i=1}^m \log \phi^{\mathbf{1}\{y^{(i)}=1\}} (1-\phi)^{1-\mathbf{1}\{y^{(i)}=1\}} \\
 
 &= -\frac{mn}{2}\log(2\pi) - \frac{m}{2}\log|\Sigma| - \frac{1}{2}\sum_{i=1}^m (x^{(i)} - \mu_{y^{(i)}})^T \Sigma^{-1} (x^{(i)} - \mu_{y^{(i)}})\\
 &\quad + \sum_{i=1}^m \mathbf{1}\{y^{(i)} = 1\} \log \phi + \left(m - \sum_{i=1}^m \mathbf{1}\{y^{(i)} = 1\}\right) \log(1-\phi) \\
 
-\frac{\partial \ell}{\partial \phi} &= \frac{1}{\phi} \sum_{i=1}^m \mathbf{1}\{y^{(i)} = 1\} + \frac{1}{\phi-1}\left(m - \sum_{i=1}^m \mathbf{1}\{y^{(i)} = 1\}\right) \\
+
+& \frac{\partial \ell}{\partial \phi} = \frac{1}{\phi} \sum_{i=1}^m \mathbf{1}\{y^{(i)} = 1\} + \frac{1}{\phi-1}\left(m - \sum_{i=1}^m \mathbf{1}\{y^{(i)} = 1\}\right) \\
 
 
-\frac{\partial \ell}{\partial \mu_{y^{(i)}}} &= \Sigma^{-1} \sum_{i=1}^m (x^{(i)} - \mu_{y^{(i)}}) \\
+& \frac{\partial \ell}{\partial \mu_{y^{(i)}}} = \Sigma^{-1} \sum_{i=1}^m (x^{(i)} - \mu_{y^{(i)}}) \\
 
 
-\frac{\partial \mu_{y^{(i)}}}{\partial \mu_0} &= \mathbf{1}\{y^{(i)} = 0\}, \quad \frac{\partial \mu_{y^{(i)}}}{\partial \mu_1} = \mathbf{1}\{y^{(i)} = 1\} \\
+& \frac{\partial \mu_{y^{(i)}}}{\partial \mu_0} = \mathbf{1}\{y^{(i)} = 0\}, \quad \frac{\partial \mu_{y^{(i)}}}{\partial \mu_1} = \mathbf{1}\{y^{(i)} = 1\} \\
 
 
-\frac{\partial \ell}{\partial \mu_0} &= \frac{\partial \ell}{\partial \mu_{y^{(i)}}} \frac{\partial \mu_{y^{(i)}}}{\partial \mu_0} = \Sigma^{-1} \sum_{i=1}^m \left(x^{(i)} \mathbf{1}\{y^{(i)} = 0\} - \mu_0 \mathbf{1}\{y^{(i)} = 0\}\right) \\
+& \frac{\partial \ell}{\partial \mu_0} = \frac{\partial \ell}{\partial \mu_{y^{(i)}}} \frac{\partial \mu_{y^{(i)}}}{\partial \mu_0} = \Sigma^{-1} \sum_{i=1}^m \left(x^{(i)} \mathbf{1}\{y^{(i)} = 0\} - \mu_0 \mathbf{1}\{y^{(i)} = 0\}\right) \\
 
 
 
-\frac{\partial \ell}{\partial \mu_1} &= \frac{\partial \ell}{\partial \mu_{y^{(i)}}} \frac{\partial \mu_{y^{(i)}}}{\partial \mu_1} = \Sigma^{-1} \sum_{i=1}^m \left(x^{(i)} \mathbf{1}\{y^{(i)} = 1\} - \mu_1 \mathbf{1}\{y^{(i)} = 1\}\right) \\
+& \frac{\partial \ell}{\partial \mu_1} = \frac{\partial \ell}{\partial \mu_{y^{(i)}}} \frac{\partial \mu_{y^{(i)}}}{\partial \mu_1} = \Sigma^{-1} \sum_{i=1}^m \left(x^{(i)} \mathbf{1}\{y^{(i)} = 1\} - \mu_1 \mathbf{1}\{y^{(i)} = 1\}\right) \\
 
 
-\frac{\partial \ell}{\partial \Sigma} &= -\frac{m}{2}\Sigma^{-1} + \frac{1}{2}\Sigma^{-1} \left(\sum_{i=1}^m (x^{(i)} - \mu_{y^{(i)}})(x^{(i)} - \mu_{y^{(i)}})^T\right) \Sigma^{-1} \\
+& \frac{\partial \ell}{\partial \Sigma} = -\frac{m}{2}\Sigma^{-1} + \frac{1}{2}\Sigma^{-1} \left(\sum_{i=1}^m (x^{(i)} - \mu_{y^{(i)}})(x^{(i)} - \mu_{y^{(i)}})^T\right) \Sigma^{-1} \\
 
-\begin{cases} \frac{\partial \ell}{\partial \phi} &= 0 \\ \frac{\partial \ell}{\partial \mu_0} &= 0 \\ \frac{\partial \ell}{\partial \mu_1} &= 0 \\ \frac{\partial \ell}{\partial \Sigma} &= 0 \end{cases} \Rightarrow \begin{cases} \phi &= \frac{1}{m} \sum_{i=1}^m \mathbf{1}\{y^{(i)} = 1\} \\ \mu_0 &= \frac{\sum_{i=1}^m \mathbf{1}\{y^{(i)}=0\}x^{(i)}}{\sum_{i=1}^m \mathbf{1}\{y^{(i)}=0\}} \\ \mu_1 &= \frac{\sum_{i=1}^m \mathbf{1}\{y^{(i)}=1\}x^{(i)}}{\sum_{i=1}^m \mathbf{1}\{y^{(i)}=1\}} \\ \Sigma &= \frac{1}{m} \sum_{i=1}^m (x^{(i)} - \mu_{y^{(i)}})(x^{(i)} - \mu_{y^{(i)}})^T \end{cases}
+& \begin{cases} \frac{\partial \ell}{\partial \phi} &= 0 \\ \frac{\partial \ell}{\partial \mu_0} &= 0 \\ \frac{\partial \ell}{\partial \mu_1} &= 0 \\ \frac{\partial \ell}{\partial \Sigma} &= 0 \end{cases} \Rightarrow \begin{cases} \phi &= \frac{1}{m} \sum_{i=1}^m \mathbf{1}\{y^{(i)} = 1\} \\ \mu_0 &= \frac{\sum_{i=1}^m \mathbf{1}\{y^{(i)}=0\}x^{(i)}}{\sum_{i=1}^m \mathbf{1}\{y^{(i)}=0\}} \\ \mu_1 &= \frac{\sum_{i=1}^m \mathbf{1}\{y^{(i)}=1\}x^{(i)}}{\sum_{i=1}^m \mathbf{1}\{y^{(i)}=1\}} \\ \Sigma &= \frac{1}{m} \sum_{i=1}^m (x^{(i)} - \mu_{y^{(i)}})(x^{(i)} - \mu_{y^{(i)}})^T \end{cases}
 
-\end{align*}
+\end{aligned}
 $$
 
-### 2. Incomplete, Positive-Only Labels
+## 2. Incomplete, Positive-Only Labels
 
-##### (a)
+### (a) Prove: $p(t^{(i)} = 1 | x^{(i)}) = p(y^{(i)} = 1 | x^{(i)})/\alpha$
 
 $$ 
 
@@ -182,11 +183,11 @@ h(x^{(i)}) & \approx p(y^{(i)} = 1 \ \vert \ x^{(i)}) \\
 \end{align*}
 $$
 
-##### (c)(d)(e) Code Problem...
+### (c)(d)(e) Code Problem...
 
-### 3. Poisson Regression
+## 3. Poisson Regression
 
-##### (a)
+### (a) Show that the Poisson distribution is in the exponential family
 
 $$
 \begin{align*}
@@ -201,7 +202,7 @@ p(y; \ \lambda) &= \frac{e^{- \lambda} \ \lambda^y}{y \ !} \\
 $$
 where $b(y) = \frac{1}{y \ !}$, $T(y) = y$, $\eta = \log \lambda$ and $a(\eta) = \exp(\eta)$.
 
-##### (b)
+### (b) What is the canonical response function for the family?
 
 $$
 \begin{align*}
@@ -215,7 +216,7 @@ $$
 \end{align*}
 $$
 
-##### (c)
+### (c) derive the stochastic gradient ascent update rule for learning using a GLM model with Poisson responses y and the canonical response function
 
 Recall the design choices of GLM:
 1. $y \ \vert \ x; \ \theta \sim \mathrm{ExponentialFamily} (\eta)$
@@ -262,9 +263,11 @@ $$
 The stochastic gradient ascent update rule is:
 $$\theta := \theta + \alpha \ \big( y^{(i)} - h_\theta (x^{(i)}) \big) \ x^{(i)}$$
 
-### 4. Convexity of Generalized Linear Models
+### (d) Coding problem...
 
-##### (a)
+## 4. Convexity of Generalized Linear Models
+
+### (a) Derive an expression for the mean of the distribution. Show that E[Y |X; θ] can be represented as the gradient of the log-partition function a with respect to the natural parameter η
 
 Proof:
 $$
@@ -304,7 +307,7 @@ $$
 $$
 The mean of an exponential family distribution is the first derivative of the log-partition function w.r.t. the natural parameter.
 
-##### (b)
+### (b) Next, derive an expression for the variance of the distribution. In particular, show that Var(Y |X; θ) can be expressed as the derivative of the mean w.r.t η
 
 Proof:
 $$
@@ -342,7 +345,9 @@ $$
 $$
 The variance of an exponential family distribution is the second derivative of the log-partition function w.r.t. the natural parameter.
 
-##### (c)
+### (c) Finally, write out the loss function ℓ(θ), the NLL of the distribution, as a function of θ. Then, calculate the Hessian of the loss w.r.t θ, and show that it is always PSD
+
+**This concludes the proof that NLL loss of GLM is convex**
 
 Recall the NLL
 $$
@@ -379,9 +384,9 @@ z^T H z & = z^T \big( x x^T \frac{\partial^2}{\partial \theta^2} a(\theta^T x) \
 $$
 which means the Hessian is PSD, showing that the NLL loss of GLM is convex.
 
-### 5. Locally weighted linear regression
+## 5. Locally weighted linear regression
 
-##### (a)
+### (a) Prove that $J(\theta)$ can also be written as: $J(\theta) = (X\theta - y)^T W (X\theta - y)$
 
 i
 Recall the cost function
@@ -503,3 +508,5 @@ $$
 Thus, maximizing $\ell (\theta)$ is equivalent to minimizing
 $$\frac{1}{2} \sum_{i = 1}^{m} \frac{1}{(\sigma^{(i)})^2} (\theta^T x^{(i)} - y^{(i)})^2$$
 By setting $w^{(i)} = 1 / (\sigma^{(i)})^2$, finding the maximum likelihood estimate of $\theta$ reduces to minimizing $J(\theta)$.
+
+### (b) (c) Code Problem...

@@ -1,47 +1,46 @@
 # PS3-Solution
 
-### 1. Simple Nerual Network
+## 1. Simple Nerual Network
 
-##### (a)
+### (a) What is the gradient descent update for $w^{[1]}_{1,2}$?
 
 $$
-\begin{align*}
+\begin{aligned}
 
-\text{We Know} \\
-z^{[1]} = w^{[1]}_{i,j}x + w^{[1]}_{0,j} \\
-h_{j} = \sigma(z^{[1]}) \\
-z^{[2]} = w^{[2]}_{j}h_{j} + w^{[2]}_{0} \\
-o = \sigma(z^{[2]}) \\
-l=\frac{1}{m}\sum_{i=1}^{m}(o^{(i)}-y^{(i)})^{2} \\
+& \text{We Know} \\
+& z^{[1]} = w^{[1]}_{i,j}x + w^{[1]}_{0,j} \\
+& h_{j} = \sigma(z^{[1]}) \\
+& z^{[2]} = w^{[2]}_{j}h_{j} + w^{[2]}_{0} \\
+& o = \sigma(z^{[2]}) \\
+& l=\frac{1}{m}\sum_{i=1}^{m}(o^{(i)}-y^{(i)})^{2} \\
 
-\frac{\partial l}{\partial w^{[1]}_{1, 2}} &= \frac{\partial l}{\partial o}\frac{\partial o}{\partial z^{[2]}} \frac{\partial z^{[2]}}{\partial h_{2}}
+& \frac{\partial l}{\partial w^{[1]}_{1, 2}} \\
+&= \frac{\partial l}{\partial o}\frac{\partial o}{\partial z^{[2]}} \frac{\partial z^{[2]}}{\partial h_{2}}
 \frac{\partial h_{2}}{\partial z^{[1]}} \frac{\partial z^{[1]}}{\partial w^{[1]}_{1,2}} \\
 &= \frac{1}{m}\sum_{i=1}^{m}2(o^{(i)}-y^{(i)})\cdot o^{(i)}(1-o^{(i)})\cdot w^{[2]}_2\cdot h_2^{(i)}(1-h_2^{(i)})\cdot x_1^{(i)} \\
 
-h^{(i)}_2 = w^{[1]}_{1,2}x^{(i)}_1 + w^{[1]}_{2,2}x^{(i)}_2 + w^{[1]}_{0,2} \\
-
+& h^{(i)}_2 = w^{[1]}_{1,2}x^{(i)}_1 + w^{[1]}_{2,2}x^{(i)}_2 + w^{[1]}_{0,2} \\
+\\
 w^{[1]}_{1,2} &:= w^{[1]}_{1,2} - \alpha\cdot \frac{\partial l}{\partial w^{[1]}_{1,2}} \\
  &:= w^{[1]}_{1,2} - \alpha\cdot \frac{1}{m}\sum_{i=1}^{m}2(o^{(i)}-y^{(i)})\cdot o^{(i)}(1-o^{(i)})\cdot w^{[2]}_2\cdot h_2^{(i)}(1-h_2^{(i)})\cdot x_1^{(i)} \\
  &:= w^{[1]}_{1,2} - \alpha\cdot \frac{2}{m}\sum_{i=1}^{m}w^{[2]}_2\cdot (o^{(i)}-y^{(i)})\cdot o^{(i)}(1-o^{(i)})\cdot h_2^{(i)}(1-h_2^{(i)})\cdot x_1^{(i)} \\
 
-\end{align*}
+\end{aligned}
 $$
 
-##### (b)
+### (b) Use the step function $f(x)$, Is it possible to find a set of weights that would allow a neural network to classify this dataset with 100% accuracy?
 
 - When assuming that the positive class is x1<= 0.5, x2 <= 0.5, x1 + x2=>4, and the rest are negative classes, there is a set of weights that makes the classification accuracy 100%(This question is very confusing, something is not quite right, I think some necessary conditions are missing, please refer to the Solution or skip it directly)
 
-##### (c)
-Solution
+### (c) Is it possible to have a set of weights that allow the neural network to classify this dataset with 100% accuracy?
+
 - It's not possible. When we adopt linear function for the hidden layer and step function for the
 output, the entire neuron network can be viewed as one linear classifier (not three). Because the
 dataset is not linearly separable, so it's impossible to achieve 100% accuracy.
 
-### 2. KL divergence and Maximum Likelihood
+## 2. KL divergence and Maximum Likelihood
 
-##### (a)
-Prove: $\forall P, Q \quad D_{KL}(P || Q) \geq 0$<br>
-$D_{KL}(P || Q) = 0 \text{ if and only if } P = Q$
+### (a) Nonnegativity. Prove: $\forall P, Q \quad D_{KL}(P || Q) \geq 0$ $D_{KL}(P || Q) = 0 \text{ if and only if } P = Q$
 
 $$
 \begin{align*}
@@ -64,9 +63,7 @@ $$
 -  If $D_{KL}(P||Q) = 0$, then $\frac{P(x)}{Q(x)} =  E[\frac{P(x)}{Q(x)}] = 1$, $P = Q$.
 -  So we get $D_{KL}(P || Q) = 0 \text{ if and only if } P = Q$
 
-##### (b)
-Prove:
-$D_{KL}(P(X,Y) || Q(X,Y)) = D_{KL}(P(X) || Q(X)) + D_{KL}(P(Y|X) || Q(Y|X))$
+### (b) Chain rule for KL divergence. Prove: $D_{KL}(P(X,Y) || Q(X,Y)) = D_{KL}(P(X) || Q(X)) + D_{KL}(P(Y|X) || Q(Y|X))$
 
 $$
 \begin{align*}
@@ -83,8 +80,7 @@ D_{KL}(P(X,Y) || Q(X,Y)) &= \sum_x \sum_y P(x,y) \log \frac{P(x,y)}{Q(x,y)} \\
 \end{align*}
 $$
 
-##### (c)
-Prove: $\arg \min_\theta D_{KL}(\hat{P} | P_\theta) = \arg \max_\theta \sum_{i=1}^m \log P_\theta(x^{(i)})$
+### (c) KL and maximum likelihood. Prove: $\arg \min_\theta D_{KL}(\hat{P} | P_\theta) = \arg \max_\theta \sum_{i=1}^m \log P_\theta(x^{(i)})$
 
 $$
 \begin{align*}
@@ -101,28 +97,27 @@ D_{KL}(\hat{P}||P_{\theta}) &= \sum_{x \in \mathcal{X}}\hat{P}(x) \log \frac{{\h
 \end{align*}
 $$
 
-### 3. KL Divergence, Fisher Information, and the Natural Gradient
+## 3. KL Divergence, Fisher Information, and the Natural Gradient
 
-##### (a)
-Prove: $E_{y \sim p(y;\theta)}[\nabla_{\theta'} \log p(y; \theta')|_{\theta' = \theta}] = 0$
+### Score function. (a) Prove: $E_{y \sim p(y;\theta)}[\nabla_{\theta'} \log p(y; \theta')|_{\theta' = \theta}] = 0$
 
 $$
-\begin{align*}
-\nabla_{\theta} \log p(y;\theta) = \frac{\nabla_{\theta}p(y;\theta)}{p(y;\theta)}  \\
-\text{We Know $E_{y \sim p(y)}[g(y)] = \int_{-\infty}^{\infty} p(y)g(y)dy$ } \\
-E_{y \sim p(y;\theta)}[\nabla_{\theta'} \log p(y; \theta')|_{\theta' = \theta}] &= E_{y \sim p(y;\theta)} \left[ \frac{\nabla_{\theta}p(y;\theta)}{p(y;\theta)} \right] \\
+\begin{aligned}
+& \nabla_{\theta} \log p(y;\theta) = \frac{\nabla_{\theta}p(y;\theta)}{p(y;\theta)}  \\
+& \text{We Know $E_{y \sim p(y)}[g(y)] = \int_{-\infty}^{\infty} p(y)g(y)dy$ } \\
+&E_{y \sim p(y;\theta)}[\nabla_{\theta'} \log p(y; \theta')|_{\theta' = \theta}] \\
+&= E_{y \sim p(y;\theta)} \left[ \frac{\nabla_{\theta}p(y;\theta)}{p(y;\theta)} \right] \\
 &= \int^{\infty}_{-\infty} p(y; \theta) \frac{\nabla_{\theta}p(y;\theta)}{p(y;\theta)} dy \\
 &= \int^{\infty}_{-\infty} \nabla_{\theta}p(y;\theta) dy \\
 &= \nabla_{\theta} \int^{\infty}_{-\infty} p(y;\theta) dy \\
-\text{We Know Probability density normalization $\int_{-\infty}^\infty p(y; \theta) \, dy = 1$ } \\
+& \text{We Know Probability density normalization $\int_{-\infty}^\infty p(y; \theta) \, dy = 1$ } \\
 &= \nabla_{\theta} 1 \\
 &= 0
 
-\end{align*}
+\end{aligned}
 $$
 
-##### (b)
-Prove: $I(\theta) = E_{y \sim p(y;\theta)}[\nabla_{\theta'} \log p(y; \theta') \nabla_{\theta'} \log p(y; \theta')^T |_{\theta' = \theta}]$
+### (b) Fisher Information. Prove: $I(\theta) = E_{y \sim p(y;\theta)}[\nabla_{\theta'} \log p(y; \theta') \nabla_{\theta'} \log p(y; \theta')^T |_{\theta' = \theta}]$
 
 $$
 \begin{align*}
@@ -135,8 +130,51 @@ I(\theta) = \text{Cov}_{y \sim p(y;\theta)}[\nabla_{\theta'} \log p(y; \theta')|
 \end{align*}
 $$
 
-##### (c)
-Prove: $E_{y \sim p(y;\theta)}[-\nabla^2_{\theta'} \log p(y; \theta')|_{\theta' = \theta}] = I(\theta)$
+### (c) Fisher Information (alternate form). Prove: $E_{y \sim p(y;\theta)}[-\nabla^2_{\theta'} \log p(y; \theta')|_{\theta' = \theta}] = I(\theta)$
+
+$$
+\text{We Know: }
+\frac{\partial \log p(y; \theta)}{\partial \theta_i} = \frac{1}{p(y; \theta)}
+\frac{\partial p(y;\theta)}{\partial \theta_i}
+$$
+
+$$
+\begin{aligned}
+
+I(\theta)_{ij} =& E_{y \sim p(y;\theta)}[\nabla_{\theta'} \log p(y; \theta')\nabla_{\theta'} \log p(y; \theta')^{T} |_{\theta' = \theta}]_{ij} \\
+=& E_{y \sim p(y;\theta)}[\frac{\partial \log p(y; \theta)}{\partial \theta_i} \frac{\partial \log p(y; \theta)}{\partial \theta_j}]_{ij} \\
+=& E_{y \sim p(y;\theta)}[\frac{1}{(p(y; \theta))^{2}} \frac{\partial^{2} p(y;\theta)}{\partial \theta_i \partial \theta_j}] \\
+\\
+& \frac{\partial^{2} \log p(y;\theta)}{\partial \theta_i \partial \theta_j}
+= -\frac{1}{(p(y; \theta))^{2}} \frac{\partial^{2} p(y;\theta)}{\partial \theta_i \partial \theta_j} + 
+\frac{1}{p(y; \theta)} \frac{\partial^{2} p(y;\theta)}{\partial \theta_i \partial \theta_j} \\
+\\
+& E_{y \sim p(y;\theta)}[-\nabla^2_{\theta'} \log p(y; \theta')|_{\theta' = \theta}] \\
+&= E_{y \sim p(y;\theta)}[\frac{1}{(p(y; \theta))^{2}} \frac{\partial^{2} p(y;\theta)}{\partial \theta_i \partial \theta_j} - 
+\frac{1}{p(y; \theta)} \frac{\partial^{2} p(y;\theta)}{\partial \theta_i \partial \theta_j}] \\
+&= E_{y \sim p(y;\theta)}[\frac{1}{(p(y; \theta))^{2}} \frac{\partial^{2} p(y;\theta)}{\partial \theta_i \partial \theta_j}] -
+E_{y \sim p(y;\theta)}[\frac{1}{p(y; \theta)} \frac{\partial^{2} p(y;\theta)}{\partial \theta_i \partial \theta_j}] \\
+&= E_{y \sim p(y;\theta)}[\frac{1}{(p(y; \theta))^{2}} \frac{\partial^{2} p(y;\theta)}{\partial \theta_i \partial \theta_j}] - \int^{\infty}_{-\infty}
+p(y; \theta) \frac{1}{p(y; \theta)} \frac{\partial^{2} p(y;\theta)}{\partial \theta_i \partial \theta_j} dy \\
+&= E_{y \sim p(y;\theta)}[\frac{1}{(p(y; \theta))^{2}} \frac{\partial^{2} p(y;\theta)}{\partial \theta_i \partial \theta_j}] - 
+\frac{\partial^{2}}{\partial \theta_i \partial \theta_j} \int^{\infty}_{-\infty} p(y; \theta) dy \\
+&=  E_{y \sim p(y;\theta)}[\frac{1}{(p(y; \theta))^{2}} \frac{\partial^{2} p(y;\theta)}{\partial \theta_i \partial \theta_j}] \\
+&= I(\theta)_{ij}
+
+\end{aligned}
+$$
+
+### (d) Approximating $D_{KL}$ with Fisher Information. Prove: $D_{KL}(p_\theta || p_{\theta+d}) \approx \frac{1}{2} d^T I(\theta) d$
+
+$$
+\begin{align*}
+
+
+
+\end{align*}
+$$
+
+### (e) Natural Gradient
 
 $$
 \begin{align*}
@@ -145,8 +183,7 @@ $$
 \end{align*}
 $$
 
-##### (d)
-Prove: $D_{KL}(p_\theta || p_{\theta+d}) \approx \frac{1}{2} d^T I(\theta) d$
+### (f) Relationship between Newton's method and natural gradient
 
 $$
 \begin{align*}
@@ -155,30 +192,9 @@ $$
 \end{align*}
 $$
 
-##### (e)
-Problem: Natural Gradient
+## 4. Semi-supervised EM
 
-$$
-\begin{align*}
-
-
-\end{align*}
-$$
-
-##### (f)
-Problem: Relationship between Newton's method and natural gradient
-
-$$
-\begin{align*}
-
-
-\end{align*}
-$$
-
-### 4. Semi-Supervised Learning
-
-##### (a)
-Prove: $\ell_{\text{semi-sup}}(\theta^{(t+1)}) \geq \ell_{\text{semi-sup}}(\theta^{(t)})$<br>
+### (a) Convergence. Prove: $\ell_{\text{semi-sup}}(\theta^{(t+1)}) \geq \ell_{\text{semi-sup}}(\theta^{(t)})$<br>
 
 We know that proving the above is to prove that the following function increases monotonically in each iteration
 $$
@@ -226,7 +242,9 @@ $$
 \end{align*}
 $$
 
-##### (b)
+## Semi-supervised GMM
+
+### (b) Semi-supervised E-Step. Clearly state which are all the latent variables that need to be re-estimated in the E-step. Derive the E-step to re-estimate all the stated latent variables
 
 Semi-supervised E-Step for GMM(Gaussian mixture model)<br>
 Estimating latent variables $z^{(i)}$
@@ -241,7 +259,11 @@ w^{(i)}_j &= Q_i(z^{(i)} = j) = P(z^{(i)}_j = j|x^{(i)};\phi,\mu,\Sigma) \\
 \end{align*}
 $$
 
-##### (C)
+### (c) Semi-supervised M-Step. Clearly state which are all the parameters that need to be re-estimated in the M-step. Derive the M-step to re-estimate all the stated parameters
+### (d) (e) Code Problem...
+### (f) Comparison of Unsupervised and Semi-supervised EM
+
+**Derive the EM parameter update formula for the semi-supervised Gaussian mixture model (GMM), and perform gradient differentiation and closed-form solution for the three parameters: $\mu_{j},\Sigma_{j},\phi_{j}$**
 
 Semi-supervised M-Step for GMM(Gaussian mixture model)<br>
 Write out to total log-likelihood $\ell_{\text{semi-sup}} = \ell_{\text{unsup}} + \alpha\ell_{\text{sup}}$<br>
@@ -378,14 +400,14 @@ $\Sigma_j = \frac{\sum_{i=1}^{m} w_j^{(i)} (x^{(i)} - \mu_j)(x^{(i)} - \mu_j)^T 
 
 $$
 \begin{align*}
-% Image 1 expressions
+
 \mathcal{L}(\phi) = \sum_{i=1}^{m} \sum_{l=1}^{k} w_l^{(i)} \log \phi_l + \sum_{i=1}^{\tilde{m}} \sum_{l=1}^{k} \mathbf{1}\{z^{(i)} = l\} \log \phi_l + \beta\left(\sum_{l=1}^{k} \phi_l - 1\right)
 \\
 \nabla_{\phi_j} \mathcal{L}(\phi) = \sum_{i=1}^{m} \frac{w_j^{(i)}}{\phi_j} + \sum_{i=1}^{\tilde{m}} \frac{\mathbf{1}\{z^{(i)} = j\}}{\phi_j} + \beta = 0
 \\
 \phi_j = \frac{\sum_{i=1}^{m} w_j^{(i)} + \alpha \sum_{i=1}^{\tilde{m}} \mathbf{1}\{z^{(i)} = j\}}{-\beta}
 \\
-% Image 2 expressions
+
 \sum_{l=1}^{k} \phi_l = \frac{\sum_{i=1}^{m} \sum_{l=1}^{k} w_l^{(i)} + \alpha \sum_{i=1}^{\tilde{m}} \sum_{l=1}^{k} \mathbf{1}\{z^{(i)} = l\}}{-\beta}
 \\
 = \frac{m + \alpha\tilde{m}}{-\beta}
@@ -398,3 +420,6 @@ $$
 \end{align*}
 $$
 
+## 5. K-means for compression
+
+### (a) (b) Code Problem...

@@ -1,12 +1,12 @@
 # PS2 Solution
 
-### 1. Logistic Regression: Training stability
+## 1. Logistic Regression: Training stability
 
-##### (a)
+### (a) What is the most notable diﬀerence in training the logistic regression model on datasets A and B? 
 
 - Data Sets A Converge quickly, Data Sets B No convergence.
 
-##### (b)
+### (b) Investigate why the training procedure behaves unexpectedly on dataset B, but not on A. Provide hard evidence
 
 - Dataset A is linearly inseparable and has a unique minimum value,but data set B is linearly separable.
 In mathematics, when a linearlyseparable data set appears without adding a regularization term,
@@ -14,7 +14,14 @@ the logarithmic loss function of logistic regression has no minimum value,
 which will cause non-convergence.
 $\mathcal{L}(\theta) = -\sum_{i=1}^{n} \left[y_i \log(p_i) + (1 - y_i) \log(1 - p_i)\right]$
 
-##### (c)
+### (c) State whether or not it would lead to the provided training algorithm converging on datasets such as B
+
+**i. Using a diﬀerent constant learning rate**<br>
+**ii. Decreasing the learning rate over time**<br>
+**iii. Linear scaling of the input features**<br>
+**iv. Adding a regularization term $||\theta||^{2}_2$ to the loss function**<br>
+**v. Adding zero-mean Gaussian noise to the training data or labels**
+
 
 1. (i and iii)
 - It is not possible to find a unique minimum value.
@@ -34,16 +41,18 @@ Is positive definite, which means that it is a strictly convex function,
 and we can get a strictly convex function plus a convex function
 equals a strictly convex function, so adding a regularization term
 can guarantee a global unique minimum.
-##### (d)
+
+### (d) Are support vector machines, which use the hinge loss, vulnerable to datasets like B? Why or why not?
+
 - It is not easily affected because Hinge-Loss only cares about
 the data within the boundary, that is, it only penalizes the data
 within the boundary, and no longer penalizes the data outside the boundary.
 From a mathematical point of view, $y(w^T x + b) \geq 1$, the loss is 0.
 
-----
-### 2. Model Calibration
+## 2. Model Calibration
 
-###### (a)
+### (a) According to the question, Show that the above property holds true for the described logistic regression model over the range (a,b) = (0,1)
+
 Prove: (a,b) = (0,1)<br>
 Hint:
 $\begin{array}{c} \mathbb{I}\{y^{(i)} = 1\} =
@@ -80,8 +89,7 @@ y^{(i)} = \mathbb{I}\{y^{(i)} = 1\} \\
 
 \end{align*}$$
 
-##### (b)
-
+### (b) If we have a binary classification model that is perfectly calibrated—that is, the property we just proved holds for any (a,b) ⊂[0,1]—does this necessarily imply that the model achieves perfect accuracy?
 
 The model is perfectly calibrated doesn't necessarily imply that the model achieves perfect accuracy.<br>
 The converse is also not necessarily true.
@@ -108,7 +116,7 @@ $$
 
 So model is perfectly calibrated doesn't mean model achieves perfect accuracy. The converse neither.
 
-##### (c)
+### (c) Discuss what eﬀect including L2 regularization in the logistic regression objective has on model calibration
 
 When adding $L_2$ regularization, $\theta$ is not the maximum likelihood parameter learned after training.<br>
 Furthermore, the loss function is
@@ -134,10 +142,10 @@ $$
 
 So the model will not be well-calibrated.
 
----
-### 3. Bayesian Interpretation of Regularization
+## 3. Bayesian Interpretation of Regularization
 
-##### (a)
+### (a) Prove: $\theta_{MAP} = \arg\max_\theta p(y|x,\theta)p(\theta)$
+
 Prove: $$\theta_{MAP} = \arg\max_\theta p(y|x,\theta)p(\theta)$$
 
 $$
@@ -163,9 +171,7 @@ $$
 **We Know, When we find the maximum value of $\theta$, parameters unrelated to $\theta$ can be removed without affecting the optimization process.**<br>
 **So, We Get** $$\theta_{MAP} = \arg\max_\theta p(y|x,\theta)p(\theta)$$
 
-##### (b)
-Prove: $$\theta_{MAP} = \arg\min_\theta -\log p(y|x,\theta) + \lambda||\theta||_2^{2}$$
-and $\lambda$?
+### (b) Prove: $\theta_{MAP} = \arg\min_\theta -\log p(y|x,\theta) + \lambda||\theta||_2^{2}$ and $\lambda$?
 
 $$
 \begin{align*}
@@ -191,20 +197,20 @@ p(\theta) = \frac{1}{(2\pi)^{n/2}\eta^{n}}\exp(-\frac{1}{2\eta^{2}}\theta^{T}\th
 \end{align*}
 $$
 
-##### (c)
+### (c) Come up with a closed form expression for $θ_{MAP}$
 
 $$
-\begin{align*}
+\begin{aligned}
 
-\epsilon^{(i)} &\sim \mathcal{N}(0, \sigma^2) \\
+& \epsilon^{(i)} \sim \mathcal{N}(0, \sigma^2) \\
 
-y^{(i)} &= \theta^T x^{(i)} + \epsilon^{(i)} \\
+& y^{(i)} = \theta^T x^{(i)} + \epsilon^{(i)} \\
 
-y^{(i)} | x^{(i)}, \theta &\sim \mathcal{N}(\theta^T x^{(i)}, \sigma^2) \\
+& y^{(i)} | x^{(i)}, \theta \sim \mathcal{N}(\theta^T x^{(i)}, \sigma^2) \\
 
-p(y^{(i)} | x^{(i)}, \theta) &= \frac{1}{\sqrt{2\pi}\sigma} \exp\left\{ -\frac{1}{2\sigma^2} \left(y^{(i)} - \theta^T x^{(i)}\right)^2 \right\} \\
+& p(y^{(i)} | x^{(i)}, \theta) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left\{ -\frac{1}{2\sigma^2} \left(y^{(i)} - \theta^T x^{(i)}\right)^2 \right\} \\
 
-p(\vec{y} | X, \theta) &= \prod_{i=1}^m p(y^{(i)} | x^{(i)}, \theta) \\
+& p(\vec{y} | X, \theta) = \prod_{i=1}^m p(y^{(i)} | x^{(i)}, \theta) \\
 
 &= \prod_{i=1}^m \frac{1}{\sqrt{2\pi}\sigma} \exp\left\{ -\frac{1}{2\sigma^2} \left(y^{(i)} - \theta^T x^{(i)}\right)^2 \right\} \\
 
@@ -212,61 +218,62 @@ p(\vec{y} | X, \theta) &= \prod_{i=1}^m p(y^{(i)} | x^{(i)}, \theta) \\
 
 &= \frac{1}{(2\pi)^{m/2} \sigma^m} \exp\left\{ -\frac{1}{2\sigma^2} \|X\theta - \vec{y}\|_2^2 \right\} \\
 \\
-\log p(\vec{y} | X, \theta) = -\frac{m}{2}\log(2\pi) - m\log\sigma - \frac{1}{2\sigma^2} \|X\theta - \vec{y}\|_2^2 \\
 
-\theta_{MAP} = \arg\min_\theta \frac{1}{2\sigma^2} \|X\theta - \vec{y}\|_2^2 + \frac{1}{2\eta^{2}}||\theta||_2^{2} \\
+& \log p(\vec{y} | X, \theta) = -\frac{m}{2}\log(2\pi) - m\log\sigma - \frac{1}{2\sigma^2} \|X\theta - \vec{y}\|_2^2 \\
 
-J(\theta) = \frac{1}{2\sigma^2} \|X\theta - \vec{y}\|_2^2 + \frac{1}{2\eta^{2}}||\theta||_2^{2} \\
+& \theta_{MAP} = \arg\min_\theta \frac{1}{2\sigma^2} \|X\theta - \vec{y}\|_2^2 + \frac{1}{2\eta^{2}}||\theta||_2^{2} \\
+
+& J(\theta) = \frac{1}{2\sigma^2} \|X\theta - \vec{y}\|_2^2 + \frac{1}{2\eta^{2}}||\theta||_2^{2} \\
 \\
 
-\text{Data Item}\ f(\theta)=\frac{1}{2\sigma^2}\bigl(\vec y - X\theta\bigr)^\top\bigl(\vec y - X\theta\bigr) \\
+& \text{Data Item}\ f(\theta)=\frac{1}{2\sigma^2}\bigl(\vec y - X\theta\bigr)^\top\bigl(\vec y - X\theta\bigr) \\
 \\
-\text{Let $r = \vec y - X\theta$ => $\nabla_\theta r = -X$} \\
+& \text{Let $r = \vec y - X\theta$ => $\nabla_\theta r = -X$} \\
 \\
-\nabla_\theta u 
+& \nabla_\theta u 
 = \Bigl(\frac{\partial r}{\partial \theta}\Bigr)^\top 
   \frac{\partial u}{\partial r}
 = (-X)^\top \,(2\,r)\\
 \\
-\nabla_\theta f
+& \nabla_\theta f
 = \frac{1}{2\sigma^2}\bigl(2\,(-X)^\top r \bigr)
 = -\frac{1}{\sigma^2}X^\top(\vec y - X\theta)
 = \frac{1}{\sigma^2}\bigl(X^\top X\theta - X^\top\vec y\bigr) \\
 \\
-\text{Regularization Item} \ g(\theta)=\frac{1}{2\eta^2}\,\theta^\top\theta,
+& \text{Regularization Item} \ g(\theta)=\frac{1}{2\eta^2}\,\theta^\top\theta,
 \qquad
 \nabla_\theta g
 = \frac{1}{2\eta^2}\,2\theta
 = \frac{1}{\eta^2}\,\theta \\
 \\
-\nabla_\theta J(\theta)
+& \nabla_\theta J(\theta)
 =\nabla_\theta f + \nabla_\theta g
 =\frac{1}{\sigma^2}(X^\top X\theta - X^\top\vec y)
 \;+\;\frac{1}{\eta^2}\,\theta \\
 \\
-\text{Set to 0} \\
+& \text{Set to 0} \\
 \\
-\frac{1}{\sigma^2}(X^\top X\theta - X^\top\vec y) + \frac{1}{\eta^2}\theta \;=\;0 \\
+& \frac{1}{\sigma^2}(X^\top X\theta - X^\top\vec y) + \frac{1}{\eta^2}\theta \;=\;0 \\
 \\
-\frac{1}{\sigma^2}(X^\top X\theta - X^\top\vec y)
+& \frac{1}{\sigma^2}(X^\top X\theta - X^\top\vec y)
 \;+\;\frac{1}{\eta^2}\theta = 0
 \;\;\Longrightarrow\;\;
 X^\top X\theta - X^\top\vec y + \frac{\sigma^2}{\eta^2}\,\theta = 0 \\
 \\
-\text{Merge} \\
+& \text{Merge} \\
 \\
-\bigl(X^\top X + \frac{\sigma^2}{\eta^2}I\bigr)\,\theta
+& \bigl(X^\top X + \frac{\sigma^2}{\eta^2}I\bigr)\,\theta
 = X^\top\vec y \\
 \\
-\text{Multiply the inverse matrix} \\
+& \text{Multiply the inverse matrix} \\
 \\
-\boxed{\theta_{\rm MAP} =\arg\min_\theta J(\theta) = \bigl(X^\top X + \tfrac{\sigma^2}{\eta^2}I\bigr)^{-1}X^\top\vec y.} \\
+& \boxed{\theta_{\rm MAP} =\arg\min_\theta J(\theta) = \bigl(X^\top X + \tfrac{\sigma^2}{\eta^2}I\bigr)^{-1}X^\top\vec y.} \\
 
-\end{align*}
+\end{aligned}
 $$
 
-##### (d)
-Solution
+### (d) Prove: $\theta_{MAP}$ is equivalent to the solution of linear regression with $L_1$ regularization, where the loss is specified as: $J(\theta) = ||X\theta - \vec{y}||_2^2 + \gamma||\theta||_1$ Also, what is the value of $\gamma$?
+
 $$
 \begin{align*}
 
@@ -289,11 +296,12 @@ J(\theta) = ||X\theta - \vec{y}||_2^2 + \gamma||\theta||_1 \\
 \end{align*}
 $$
 
-### 4. Constructing kernel function
+## 4. Constructing kernel function
 
-Solution:
-##### (a)
-Prove: $K(x,z) = K_1(x,z) + K_2(x,z)$
+**For each of the functions K below, state whether it is necessarily a kernel. If you think it is, prove it; if you think it isn’t, give a counter-example**
+
+### (a) $K(x,z) = K_1(x,z) + K_2(x,z)$
+
 $$
 \begin{align*}
 \text{Yes, $K_1$ and $K_2$ are both PSD, so $K_1 + K_2$ is PSD.} \\
@@ -302,8 +310,8 @@ z^T K z = z^T (K_1 + K_2) z = z^T K_1 z + z^T K_2 z \geq 0
 \end{align*}
 $$
 
-##### (b)
-Prove: $K(x,z) = K_1(x,z) - K_2(x,z)$
+### (b) $K(x,z) = K_1(x,z) - K_2(x,z)$
+
 $$
 \begin{align*}
 \text{No, although $K_1$ and $K_2$ are both PSD, $K_1 - K_2$ may not be PSD.
@@ -313,8 +321,8 @@ z^T K z = z^T (K_1 - K_2) z = z^T (K_1 - 2K_1) z = -z^T K_1 z \leq 0
 \end{align*}
 $$
 
-##### (c)
-Prove: $K(x,z) = aK_1(x,z)$
+### (c) $K(x,z) = aK_1(x,z)$
+
 $$
 \begin{align*}
 \text{Yes, $K_1$ is PSD, so $aK_1$ $(a \in \mathbb{R}^+)$ is PSD.} \\
@@ -323,8 +331,8 @@ z^T K z = z^T a K_1 z = a \cdot z^T K_1 z \geq 0
 \end{align*}
 $$
 
-##### (d)
-Prove: $K(x,z) = -aK_1(x,z)$
+### (d) $K(x,z) = -aK_1(x,z)$
+
 $$
 \begin{align*}
 \text{No, $K_1$ is PSD, so $-aK_1$ $(a \in \mathbb{R}^+)$ is not PSD.} \\
@@ -333,8 +341,8 @@ z^T K z = z^T (-a K_1) z = -a \cdot z^T K_1 z \leq 0
 \end{align*}
 $$
 
-##### (e)
-Prove: $K(x,z) = K_1(x,z)K_2(x,z)$
+### (e) $K(x,z) = K_1(x,z)K_2(x,z)s$
+
 $$
 \begin{align*}
 \text{Yes, $K_1 K_2$ is PSD.} \\
@@ -347,8 +355,8 @@ z^T K z &= \sum \sum z_i K_{ij} z_j \\
 \end{align*}
 $$
 
-##### (f)
-Prove: $K(x,z) = f(x)f(z)$
+### (f) $K(x,z) = f(x)f(z)$
+
 $$
 \begin{align*}
 \text{Yes, $K$ is PSD.} \\
@@ -360,8 +368,8 @@ z^T K z &= \sum \sum z_i K_{ij} z_j \\
 \end{align*}
 $$
 
-##### (g)
-Prove: $K(x,z) = K_3(\phi(x), \phi(z))$
+### (g) $K(x,z) = K_3(\phi(x), \phi(z))$
+
 $$
 \begin{align*}
 \text{Yes, $K_3(\phi(x), \phi(z))$ is a valid kernel, no matter what the inputs are.} \\
@@ -376,78 +384,82 @@ K(x, z) = p(K_1(x, z)) = \sum_{k=0}^n c_k \left(K_1(x, z)\right)^k
 \end{align*}
 $$
 
-##### (h)
-Prove: $K(x,z) = p(K_1(x,z))$
-$$
-\begin{align*}
+### (h) $K(x,z) = p(K_1(x,z))$
 
-\text{From (e) we know $K(x, z) = K_1(x, z) K_2(x, z)$ is a valid kernel, so $K(x, z) = \left(K_1(x, z)\right)^k$ is valid.} \\
+$$
+\begin{aligned}
+
+& \text{From (e) we know $K(x, z) = K_1(x, z) K_2(x, z)$ is a valid kernel, so $K(x, z) = \left(K_1(x, z)\right)^k$ is valid.} \\
 \\
-\text{From (a) and (c), we know $K(x, z) = K_1(x, z) + K_2(x, z)$ and $K(x, z) = a K_1(x, z)$, $a \in \mathbb{R}^+$ are both valid.} \\
+& \text{From (a) and (c), we know $K(x, z) = K_1(x, z) + K_2(x, z)$ and $K(x, z) = a K_1(x, z)$, $a \in \mathbb{R}^+$ are both valid.} \\
 \\
-\text{So $K(x, z) = \sum_{k=0}^n c_k \left(K_1(x, z)\right)^k$ is a valid kernel.} \\
+& \text{So $K(x, z) = \sum_{k=0}^n c_k \left(K_1(x, z)\right)^k$ is a valid kernel.} \\
 
-\end{align*}
+\end{aligned}
 $$
 
-### 5. Kernelization of Perceptron
+## 5. Kernelization of Perceptron
 
-##### (a)
+### (a) How would you (implicitly) represent the high-dimensional parameter vector $\theta^{(i)}$, including the initial value $\theta^{(0)} = 0$?
+
 $$
-\begin{align*}
-\text{i} \\
-\text{Perceptron Algorithm Update \ $\theta^{(t)} \;=\; \theta^{(t-1)}
+\begin{aligned}
+
+& \text{i} \\
+& \text{Perceptron Algorithm Update \ $\theta^{(t)} \;=\; \theta^{(t-1)}
 \;+\;\alpha\bigl(y^{(t)} - h_{\theta^{(t-1)}}(x^{(t)})\bigr)\,\phi\bigl(x^{(t)}\bigr)$} \\
 \\
-\text{We use \ $\beta_t \;=\; \alpha\bigl(y^{(t)} - h_{\theta^{(t-1)}}(x^{(t)})\bigr)$} \\
+& \text{We use \ $\beta_t \;=\; \alpha\bigl(y^{(t)} - h_{\theta^{(t-1)}}(x^{(t)})\bigr)$} \\
 \\
-\text{So, \ $\theta^{(t)} = \theta^{(t-1)} + \beta_t\,\phi\bigl(x^{(t)}\bigr)$} \\
+& \text{So, \ $\theta^{(t)} = \theta^{(t-1)} + \beta_t\,\phi\bigl(x^{(t)}\bigr)$} \\
 \\
-\text{We know $\theta^{(0)} = \vec 0$} \\
+& \text{We know $\theta^{(0)} = \vec 0$} \\
 \\
-\sum_{j=1}^0 \beta_j\,\phi\bigl(x^{(j)}\bigr)
+& \sum_{j=1}^0 \beta_j\,\phi\bigl(x^{(j)}\bigr)
 = 0 \\
 \\
-\text{Assume that for some i - 1 >= 0, We have }\\
+& \text{Assume that for some i - 1 >= 0, We have }\\
 \\
-\theta^{(i-1)} \;=\; \sum_{j=1}^{i-1} \beta_j\,\phi\bigl(x^{(j)}\bigr) \\
+& \theta^{(i-1)} \;=\; \sum_{j=1}^{i-1} \beta_j\,\phi\bigl(x^{(j)}\bigr) \\
 \\
-\text{We know \ $\theta^{(i)}
+& \text{We know \ $\theta^{(i)}
 = \theta^{(i-1)} + \beta_i\,\phi\bigl(x^{(i)}\bigr)$} \\
 \\
-\theta^{(i)}
+& \theta^{(i)}
 = \Bigl(\sum_{j=1}^{i-1} \beta_j\,\phi\bigl(x^{(j)}\bigr)\Bigr)
   + \beta_i\,\phi\bigl(x^{(i)}\bigr)
 = \sum_{j=1}^{i} \beta_j\,\phi\bigl(x^{(j)}\bigr) \\
 \\
-\text{ii} \\
+& \text{ii} \\
 \\
-h_{\theta^{(i)}}\left(\phi\left(x^{(i+1)}\right)\right)
-= g\left(\theta^{(i)T} \phi\left(x^{(i+1)}\right)\right) 
-= \text{sign}\left(\theta^{(i)T} \phi\left(x^{(i+1)}\right)\right) 
+& h_{\theta^{(i)}}\left(\phi\left(x^{(i+1)}\right)\right) = g\left(\theta^{(i)T} \phi\left(x^{(i+1)}\right)\right) \\
+&= \text{sign}\left(\theta^{(i)T} \phi\left(x^{(i+1)}\right)\right) \\
 &= \text{sign}\left(\sum_{j=1}^{i} \beta_j \phi\left(x^{(j)}\right)^T \phi\left(x^{(i+1)}\right)\right) \\
 &= \text{sign}\left(\sum_{j=1}^{i} \beta_j \left\langle \phi\left(x^{(j)}\right), \phi\left(x^{(i+1)}\right) \right\rangle\right) \\
 &= \text{sign}\left(\sum_{j=1}^{i} \beta_j K\left(x^{(j)}, x^{(i+1)}\right)\right)
 \\
-\text{iii} \\
+& \text{iii} \\
 \\
-\theta^{(i+1)} := \theta^{(i)} + \alpha \left(y^{(i+1)} - h_{\theta^{(i)}}\left(\phi\left(x^{(i+1)}\right)\right)\right) \phi\left(x^{(i+1)}\right) 
+& \theta^{(i+1)} := \theta^{(i)} + \alpha \left(y^{(i+1)} - h_{\theta^{(i)}}\left(\phi\left(x^{(i+1)}\right)\right)\right) \phi\left(x^{(i+1)}\right) 
+\\
+&= \sum_{j=1}^{i} \beta_j \phi\left(x^{(j)}\right) + \alpha \left(y^{(i+1)} - \text{sign}\left(\sum_{j=1}^{i} \beta_j K\left(x^{(j)}, x^{(i+1)}\right)\right)\right) \phi\left(x^{(i+1)}\right) \\
 
-= \sum_{j=1}^{i} \beta_j \phi\left(x^{(j)}\right) + \alpha \left(y^{(i+1)} - \text{sign}\left(\sum_{j=1}^{i} \beta_j K\left(x^{(j)}, x^{(i+1)}\right)\right)\right) \phi\left(x^{(i+1)}\right) \\
+& \beta_{i+1} = \alpha \left(y^{(i+1)} - \text{sign}\left(\sum_{j=1}^{i} \beta_j K\left(x^{(j)}, x^{(i+1)}\right)\right)\right)
 
-\beta_{i+1} = \alpha \left(y^{(i+1)} - \text{sign}\left(\sum_{j=1}^{i} \beta_j K\left(x^{(j)}, x^{(i+1)}\right)\right)\right)
-
-\end{align*}
+\end{aligned}
 $$
 
-##### (c)
+### (b) (c) Code Problem...
+
 The dot product kernel is only effective for linear models.
 
-### 6. Sorting spam mail
+## 6. Sorting spam mail
 
-##### (a) Code Problem...
+**use the naive Bayes algorithm and an SVM to build a spam classifier**
 
-##### (b)
+### (a) (b) (c) (d) Code Problem...
+
+### (b) Find a way to compute Naive Bayes’ predicted class labels without explicitly representing very small numbers such as p(x|y) [Hint: Think about using logarithms]
 
 $$
 \begin{align*}
