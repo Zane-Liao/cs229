@@ -167,29 +167,78 @@ $$
 ### (d) Approximating $D_{KL}$ with Fisher Information. Prove: $D_{KL}(p_\theta || p_{\theta+d}) \approx \frac{1}{2} d^T I(\theta) d$
 
 $$
-\begin{align*}
+\begin{aligned}
 
+& \tilde{\theta} = \theta + d \\
+& \log p(y; \tilde{\theta}) \approx \log(p;\theta) + (\tilde{\theta} - \theta)^{T} \nabla_{\theta^{'}} \log p(y; \theta^{'}) |_{\theta^{'} = \theta} +
+\frac{1}{2} (\tilde{\theta} - \theta)^{T} (\nabla^{2}_{\theta^{'}} \log 
+p(y; \theta^{'})|_{\tilde{\theta} = \theta}) ( \tilde{\theta} - \theta) \\
+&= \log p(y; \tilde{\theta}) + d^{T} \nabla_{\theta^{'}} \log p(y; \theta^{'}) |_{\theta^{'} = \theta} + \frac{1}{2} d^{T} \left( \nabla^{2}_{\theta^{'}} \log p(y; \theta^{'})|_{\tilde{\theta} = \theta} \right)d \\
+\\
+& E_{y \sim p(y;\theta)}[\log p(y; \tilde{\theta})] \\
+&= E_{y \sim p(y;\theta)}[\log p(y; \theta)] + \frac{1}{2} d^{T} E_{y \sim p(y;\theta)} \left( \nabla^{2}_{\theta^{'}} \log p(y; \theta^{'})|_{\tilde{\theta} = \theta} \right)d \\
+&= E_{y \sim p(y;\theta)}[\log p(y; \theta)] + \frac{1}{2} d^{T} I(\theta)d \\
+\\
+& D_{KL}(p_\theta || p_{\theta+d}) \\
+&= D_{KL}(p_\theta || p_{\tilde{\theta}}) \\
+&= E_{y \sim p(y;\theta)}[\log p(y; \theta)] + E_{y \sim p(y;\theta)}[\log p(y; \tilde{\theta})] \\
+&\approx \frac{1}{2}d^{T}I(\theta)d \\
 
-
-\end{align*}
+\end{aligned}
 $$
 
-### (e) Natural Gradient
+### (e) Natural Gradient. Solve the constrained optimization problem
 
 $$
-\begin{align*}
+\begin{aligned}
 
+&d^* = \arg \max_d \ell(\theta + d) \quad \text{subject to} \quad D_{\text{KL}}(p_\theta \| p_{\theta+d}) = c \\
+\\
+&\ell(\theta + d) \approx \ell(\theta) + d^T \nabla_\theta \ell(\theta')|_{\theta'=\theta} \\
+&\quad = \log p(y; \theta) + d^T \nabla_{\theta'} \log p(y; \theta')|_{\theta'=\theta} \\
+&\quad = \log p(y; \theta) + d^T \frac{\nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}}{p(y; \theta)} \\
+\\
+&D_{\text{KL}}(p_\theta \| p_{\theta+d}) \approx \frac{1}{2}d^T \mathcal{I}(\theta)d \\
+\\
+&\mathcal{L}(d, \lambda) = \ell(\theta + d) - \lambda \left[ D_{\text{KL}}(p_\theta \| p_{\theta+d}) - c \right] \\
+&\quad \approx \log p(y; \theta) + d^T \frac{\nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}}{p(y; \theta)} - \lambda \left[ \frac{1}{2}d^T \mathcal{I}(\theta)d - c \right] \\
+\\
+&\nabla_d \mathcal{L}(d, \lambda) \approx \frac{\nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}}{p(y; \theta)} - \lambda \mathcal{I}(\theta)d = 0 \\
+\\
+&\tilde{d} = \frac{1}{\lambda}\mathcal{I}(\theta)^{-1} \frac{\nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}}{p(y; \theta)} \\
+\\
+&\nabla_\lambda \mathcal{L}(d, \lambda) \approx c - \frac{1}{2}d^T \mathcal{I}(\theta)d \\
+&\quad = c - \frac{1}{2} \cdot \frac{1}{\lambda} \frac{\nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}^T}{p(y; \theta)} \mathcal{I}(\theta)^{-1} \cdot \mathcal{I}(\theta) \cdot \frac{1}{\lambda}\mathcal{I}(\theta)^{-1} \frac{\nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}}{p(y; \theta)} \\
+&\quad = c - \frac{1}{2\lambda^2(p(y; \theta))^2} \nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}^T \mathcal{I}(\theta)^{-1} \nabla_{\theta'} p(y; \theta')|_{\theta'=\theta} \\
+&\quad = 0 \\
+\\
+&\lambda = \sqrt{\frac{1}{2c(p(y; \theta))^2} \nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}^T \mathcal{I}(\theta)^{-1} \nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}} \\
+\\
+&d^* = \sqrt{\frac{2c(p(y; \theta))^2}{\nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}^T \mathcal{I}(\theta)^{-1} \nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}}} \mathcal{I}(\theta)^{-1} \frac{\nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}}{p(y; \theta)} \\
+\\
+&\quad = \sqrt{\frac{2c}{\nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}^T \mathcal{I}(\theta)^{-1} \nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}}} \mathcal{I}(\theta)^{-1} \nabla_{\theta'} p(y; \theta')|_{\theta'=\theta}
 
-\end{align*}
+\end{aligned}
 $$
 
 ### (f) Relationship between Newton's method and natural gradient
 
 $$
-\begin{align*}
+\begin{aligned}
 
+&\text{Newton's method} \\
+&\theta := \theta - H^{-1} \nabla_\theta \ell(\theta) \\
+\\
+&\text{Natural gradient} \\
+&\mathcal{I}(\theta) = \mathbb{E}_{y \sim p(y;\theta)} \left[ -\nabla_\theta^2 \log p(y; \theta') |_{\theta'=\theta} \right] \\
+&\quad = \mathbb{E}_{y \sim p(y;\theta)} \left[ -\nabla_\theta^2 \ell(\theta) \right] \\
+&\quad = -\mathbb{E}_{y \sim p(y;\theta)} [H] \\
+\\
+&\theta := \theta + \tilde{d} \\
+&\quad = \theta + \frac{1}{\lambda}\mathcal{I}(\theta)^{-1} \nabla_\theta \ell(\theta) \\
+&\quad = \theta - \frac{1}{\lambda}\mathbb{E}_{y \sim p(y;\theta)} [H]^{-1} \nabla_\theta \ell(\theta)
 
-\end{align*}
+\end{aligned}
 $$
 
 ## 4. Semi-supervised EM
